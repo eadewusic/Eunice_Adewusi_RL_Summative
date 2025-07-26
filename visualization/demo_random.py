@@ -62,8 +62,25 @@ class RandomAgent:
             return self.action_names[action]
         return f"Unknown Action {action}"
 
+def capture_frame_from_surface(surface) -> np.ndarray:
+    """
+    Capture frame from pygame surface for GIF
+    
+    Args:
+        surface: Pygame surface
+        
+    Returns:
+        RGB array suitable for GIF
+    """
+    # Convert pygame surface to numpy array
+    frame_array = pygame.surfarray.array3d(surface)
+    # Transpose to get correct orientation (pygame uses (width, height, channels))
+    frame_array = np.transpose(frame_array, (1, 0, 2))
+    return frame_array
+
 def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200, 
-                   export_gif: bool = True, gif_filename: str = "traffic_random_demo.gif", show_window: bool = True):
+                   export_gif: bool = True, gif_filename: str = "traffic_random_demo.gif", 
+                   show_window: bool = True):
     """
     Run the random action demonstration
     
@@ -81,7 +98,7 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
     print("This demonstrates the environment without any trained model.")
     print()
     
-    # Create environment - ALWAYS use human mode if showing window
+    # Create environment - always use human mode if showing window
     render_mode = "human" if show_window else None
     env = TrafficJunctionEnv(render_mode=render_mode)
     agent = RandomAgent(env.action_space.n)
@@ -91,6 +108,12 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
     
     # Storage for GIF frames
     gif_frames: List[np.ndarray] = []
+    
+    # Create videos directory if exporting GIF
+    if export_gif:
+        os.makedirs("videos", exist_ok=True)
+        gif_path = os.path.join("videos", gif_filename)
+        print(f"📹 GIF will be saved to: {gif_path}")
     
     # Statistics tracking
     total_reward = 0
@@ -121,24 +144,37 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
                 episode_reward += reward
                 episode_steps += 1
                 
-                # Render environment - always render and update display
-                frame = visualizer.render(action_taken=action)
-                
-                # Store frame for GIF (every 5th frame to reduce file size)
-                if export_gif and step % 5 == 0:
-                    if frame is not None:
+                # Render environment - Draw all components
+                if show_window:
+                    # Clear screen and draw everything
+                    visualizer.screen.fill(visualizer.colors['background'])
+                    visualizer._draw_roads()
+                    visualizer._draw_intersection()
+                    visualizer._draw_traffic_lights()
+                    visualizer._draw_vehicles()
+                    visualizer._draw_queue_indicators()
+                    visualizer._draw_performance_panel(action)
+                    visualizer._draw_info_panel()
+                    
+                    # Update display
+                    pygame.display.flip()
+                    visualizer.clock.tick(8)  # 8 FPS for good viewing speed
+                    
+                    # Capture frame for GIF (every 3rd frame to reduce file size but keep smoothness)
+                    if export_gif and step % 3 == 0:
+                        frame = capture_frame_from_surface(visualizer.screen)
                         gif_frames.append(frame)
                 
                 # Print step information (every 20 steps to avoid spam)
                 if step % 20 == 0:
                     print(f"  Step {step:3d}: {action_name:15s} | "
                           f"Reward: {reward:+6.2f} | "
-                          f"Queues: N:{info['total_vehicles_waiting']:2d} | "
+                          f"Queues: {info['total_vehicles_waiting']:2d} | "
                           f"Light: {info['current_light']:12s} | "
                           f"State: {info['hidden_state']}")
                 
                 # Handle pygame events
-                if not visualizer.handle_events():
+                if show_window and not visualizer.handle_events():
                     print("User closed window. Exiting...")
                     return
                 
@@ -178,29 +214,42 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
         print(f"Total Reward: {total_reward:.2f}")
         print(f"Average Reward per Episode: {total_reward / episodes:.2f}")
         print(f"Total Vehicles Processed: {total_vehicles_processed}")
+        print(f"Average Vehicles per Episode: {total_vehicles_processed / episodes:.1f}")
         
         # Export GIF if requested
         if export_gif and gif_frames:
             print(f"\nExporting GIF with {len(gif_frames)} frames...")
             try:
-                # Ensure frames are valid
-                valid_frames = [frame for frame in gif_frames if frame.size > 0]
+                # Ensure frames are valid and have consistent dimensions
+                valid_frames = []
+                for frame in gif_frames:
+                    if frame.size > 0 and len(frame.shape) == 3:
+                        valid_frames.append(frame)
+                
                 if valid_frames:
-                    imageio.mimsave(gif_filename, valid_frames, fps=6, loop=0)
-                    print(f"GIF saved as: {gif_filename}")
-                    file_size = os.path.getsize(gif_filename) / 1024 / 1024
+                    # Save to videos folder
+                    gif_path = os.path.join("videos", gif_filename)
+                    imageio.mimsave(gif_path, valid_frames, fps=8, loop=0, duration=0.125)
+                    
+                    print(f"GIF saved as: {gif_path}")
+                    file_size = os.path.getsize(gif_path) / 1024 / 1024
                     print(f"   File size: ~{file_size:.1f} MB")
+                    print(f"   Duration: ~{len(valid_frames) / 8:.1f} seconds")
+                    print(f"   Frames: {len(valid_frames)}")
                 else:
                     print("No valid frames captured for GIF")
             except Exception as e:
                 print(f"Error saving GIF: {e}")
+                import traceback
+                traceback.print_exc()
+        elif export_gif:
+            print("No frames captured - ensure show_window=True for GIF export")
         
         # Clean up
         visualizer.close()
         env.close()
 
         print("\nRandom action demonstration completed!")
-        print("This shows the environment dynamics without any intelligent agent.")
 
 def analyze_random_performance():
     """
@@ -257,20 +306,34 @@ def analyze_random_performance():
         'avg_length': avg_length
     }
 
+def create_random_actions_gif():
+    """
+    Create a high-quality GIF specifically for assignment submission
+    """
+    print("Creating Assignment Submission GIF")
+    print("=" * 50)
+    
+    # Create a focused demo for assignment
+    run_random_demo(
+        episodes=2,  # Shorter for assignment
+        max_steps_per_episode=120,
+        export_gif=True,
+        gif_filename="traffic_random_demo.gif",
+        show_window=True
+    )
+    
+    print("\Random Traffic Actions GIF created!")
+
 if __name__ == "__main__":
     print("Rwanda Traffic Flow Optimization - Random Demo")
     print("Environment: Traffic light control to replace road wardens")
     print()
     
-    # Run the demo
-    run_random_demo(
-        episodes=3,
-        max_steps_per_episode=150,
-        export_gif=True,
-        gif_filename="traffic_random_demo.gif"
-    )
+    # Option 1: Create assignment-ready GIF
+    create_random_actions_gif()
     
-    # Analyze random baseline
+    # Option 2: Full analysis
+    print("\n" + "="*60)
     baseline_stats = analyze_random_performance()
     
     print(f"\nBaseline established for RL agent comparison:")
