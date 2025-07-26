@@ -1,0 +1,7 @@
+{
+  "learning_rate": 0.001,
+  "gamma": 0.99,
+  "use_baseline": true,
+  "network_architecture": "128-128-64",
+  "device": "cpu"
+}

@@ -1,0 +1,20 @@
+{
+  "algorithm": "REINFORCE",
+  "mean_reward": -354.5,
+  "std_reward": 128.74956310605486,
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "gamma": 0.99,
+    "use_baseline": true,
+    "network_architecture": "128-128-64",
+    "device": "cpu"
+  },
+  "training_stats": {
+    "training_time": "0:00:56.224202",
+    "num_episodes": 1500,
+    "final_avg_reward": -360.27,
+    "best_avg_reward": -213.46,
+    "final_model_path": "models/reinforce/reinforce_traffic_final.pth",
+    "config_path": "models/reinforce/reinforce_config.json"
+  }
+}
