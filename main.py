@@ -137,7 +137,7 @@ def run_evaluation():
 
 def print_project_info():
     """Print project information and structure"""
-    print("🇷🇼 Rwanda Traffic Flow Optimization Project")
+    print("Rwanda Traffic Flow Optimization Project")
     print("=" * 60)
     print("Mission: Replace manual road wardens with intelligent RL agents")
     print("Problem: Traffic congestion in major African cities")
@@ -160,7 +160,7 @@ def print_project_info():
     print("  environment/     - Custom Gymnasium environment and visualization")
     print("  training/        - RL algorithm training scripts")
     print("  models/          - Saved trained models")
-    print("  visualization/   - Demo and visualization scripts")
+    print("  visualization/   - Visualization scripts")
     print("  main.py          - This entry point script")
     print()
 
@@ -178,7 +178,6 @@ Examples:
   python main.py --train-ac             # Train Actor-Critic agent only
   python main.py --train-all            # Train all RL algorithms
   python main.py --evaluate             # Evaluate trained models
-  python main.py --visualize            # Show trained agent in action (3-minute video)
         """
     )
     
@@ -196,8 +195,6 @@ Examples:
                        help='Train all RL algorithms (DQN, REINFORCE, PPO, Actor-Critic)')
     parser.add_argument('--evaluate', action='store_true',
                        help='Evaluate and compare all trained models')
-    parser.add_argument('--visualize', action='store_true',
-                       help='Visualize trained agent performance (creates 3-minute video)')
     
     args = parser.parse_args()
     
@@ -229,9 +226,6 @@ Examples:
         
         if args.evaluate:
             run_evaluation()
-        
-        if args.visualize:
-            run_visualization()
             
     except KeyboardInterrupt:
         print("\nOperation interrupted by user")
@@ -267,7 +261,6 @@ def setup_project_structure():
 
 if __name__ == "__main__":
     print("Rwanda Traffic Junction - RL Optimization System")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Objective: Replace road wardens with intelligent agents")
     print()
     

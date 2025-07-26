@@ -22,7 +22,7 @@ from typing import List
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from environment.traffic_junction_env import TrafficJunctionEnv
-from environment.traffic_rendering import TrafficVisualizer
+from environment.traffic_visualization import TrafficVisualizer
 
 class RandomAgent:
     """
@@ -73,7 +73,7 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
         gif_filename: Name of the GIF file
     """
     
-    print("Rwanda Traffic Junction - Random Action Demo")
+    print("🚦 Rwanda Traffic Junction - Random Action Demo")
     print("=" * 60)
     print(f"Running {episodes} episodes with random actions...")
     print("This demonstrates the environment without any trained model.")
@@ -179,19 +179,19 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
         
         # Export GIF if requested
         if export_gif and gif_frames:
-            print(f"\nExporting GIF with {len(gif_frames)} frames...")
+            print(f"\n📹 Exporting GIF with {len(gif_frames)} frames...")
             try:
                 imageio.mimsave(gif_filename, gif_frames, fps=8, loop=0)
-                print(f"GIF saved as: {gif_filename}")
+                print(f"✅ GIF saved as: {gif_filename}")
                 print(f"   File size: ~{os.path.getsize(gif_filename) / 1024 / 1024:.1f} MB")
             except Exception as e:
-                print(f"Error saving GIF: {e}")
+                print(f"❌ Error saving GIF: {e}")
         
         # Clean up
         visualizer.close()
         env.close()
         
-        print("\nRandom action demonstration completed!")
+        print("\n🎯 Random action demonstration completed!")
         print("This shows the environment dynamics without any intelligent agent.")
         print("Next step: Train RL agents (DQN, PPO, REINFORCE, Actor-Critic) for optimization.")
 
@@ -251,7 +251,7 @@ def analyze_random_performance():
     }
 
 if __name__ == "__main__":
-    print("Rwanda Traffic Flow Optimization - Random Demo")
+    print("🇷🇼 Rwanda Traffic Flow Optimization - Random Demo")
     print("Assignment: Mission-Based Reinforcement Learning")
     print("Environment: Traffic light control to replace road wardens")
     print()
