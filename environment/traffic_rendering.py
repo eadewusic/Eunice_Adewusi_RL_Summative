@@ -93,13 +93,12 @@ class TrafficVisualizer:
         self._draw_performance_panel(action_taken)
         self._draw_info_panel()
         
-        # Update display
-        if self.env.render_mode == "human":
-            pygame.display.flip()
-            self.clock.tick(60)  # 60 FPS
-            
-        elif self.env.render_mode == "rgb_array":
-            # Return RGB array for recording
+        # always update display if pygame window exists
+        pygame.display.flip()
+        self.clock.tick(10)  # Slower FPS for better viewing
+        
+        # Return RGB array if requested
+        if self.env.render_mode == "rgb_array":
             return pygame.surfarray.array3d(self.screen).transpose((1, 0, 2))
         
         return None

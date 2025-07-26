@@ -381,7 +381,7 @@ class TrafficJunctionEnv(gym.Env):
         return total_queue >= self.max_queue_length * 4
     
     def render(self):
-        """Render the environment (placeholder for now)"""
+        """Render the environment"""
         if self.render_mode == "human":
             print(f"\n=== Traffic Junction Status ===")
             print(f"Time: {int(self.current_time):02d}:{int((self.current_time % 1) * 60):02d}")
