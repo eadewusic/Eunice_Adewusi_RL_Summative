@@ -2,7 +2,8 @@
 REINFORCE Training Script for Rwanda Traffic Junction Environment
 
 This script implements REINFORCE (Monte Carlo Policy Gradient) algorithm
-for the traffic light optimization task.
+with proper CSV logging and tensorboard integration for the traffic light
+optimization task.
 
 REINFORCE is a policy gradient method that learns directly from episodes
 using Monte Carlo sampling, making it suitable for episodic tasks.
@@ -16,6 +17,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.distributions import Categorical
+from torch.utils.tensorboard import SummaryWriter
 import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple, Optional
 import json
@@ -94,7 +96,7 @@ class ValueNetwork(nn.Module):
 
 class REINFORCEAgent:
     """
-    REINFORCE agent for traffic light optimization
+    REINFORCE agent for traffic light optimization with proper logging
     """
     
     def __init__(self,
@@ -278,7 +280,7 @@ class REINFORCEAgent:
               save_path: str = "models/reinforce/",
               verbose: bool = True) -> Dict:
         """
-        Train the REINFORCE agent
+        Train the REINFORCE agent with proper CSV and tensorboard logging
         
         Args:
             env: Training environment
@@ -302,10 +304,19 @@ class REINFORCEAgent:
         # Create save directory
         os.makedirs(save_path, exist_ok=True)
         
+        # Initialize loggers
+        training_logger = TrainingLogger("REINFORCE")
+        
+        # Initialize tensorboard logging
+        tensorboard_dir = "./tensorboard_logs/reinforce/"
+        os.makedirs(tensorboard_dir, exist_ok=True)
+        writer = SummaryWriter(tensorboard_dir)
+        
         # Training statistics
         recent_rewards = deque(maxlen=100)
         best_avg_reward = float('-inf')
         start_time = datetime.now()
+        global_step = 0
         
         try:
             for episode in range(num_episodes):
@@ -326,10 +337,26 @@ class REINFORCEAgent:
                     # Store transition
                     self.store_transition(state, action, reward, log_prob)
                     
+                    # Log step metrics
+                    step_data = StepMetricsCollector.extract_step_metrics(
+                        env_info=info,
+                        episode=episode,
+                        step_in_episode=step,
+                        action=action,
+                        reward=reward,
+                        cumulative_reward=episode_reward + reward
+                    )
+                    training_logger.log_step(step_data)
+                    
                     # Update for next iteration
                     state = next_state
                     episode_reward += reward
                     episode_length += 1
+                    global_step += 1
+
+                    # Log to tensorboard
+                    writer.add_scalar('Step/Reward', reward, global_step)
+                    writer.add_scalar('Step/Queue_Length', info.get('total_vehicles_waiting', 0), global_step)
                     
                     # Check if episode ended
                     if terminated or truncated:
@@ -338,11 +365,28 @@ class REINFORCEAgent:
                 # Update policy after episode
                 self.update_policy()
                 
+                # Log episode metrics
+                episode_data = StepMetricsCollector.extract_episode_metrics(
+                    episode_reward=episode_reward,
+                    episode_length=episode_length,
+                    final_info=info
+                )
+                training_logger.log_episode(episode_data)
+                
                 # Record episode statistics
                 self.episode_rewards_history.append(episode_reward)
                 self.episode_lengths_history.append(episode_length)
                 recent_rewards.append(episode_reward)
-                
+
+                # Log to tensorboard
+                writer.add_scalar('Episode/Reward', episode_reward, episode)
+                writer.add_scalar('Episode/Length', episode_length, episode)
+                writer.add_scalar('Episode/Avg_Reward_100', np.mean(recent_rewards), episode)
+                if self.policy_losses:
+                    writer.add_scalar('Training/Policy_Loss', self.policy_losses[-1], episode)
+                if self.value_losses:
+                    writer.add_scalar('Training/Value_Loss', self.value_losses[-1], episode)
+
                 # Print progress
                 if verbose and (episode + 1) % 50 == 0:
                     avg_reward = np.mean(recent_rewards)
@@ -385,13 +429,27 @@ class REINFORCEAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
+            # Finalize logging
+            training_logger.save_final_summary()
+            create_training_plots("REINFORCE")
+            writer.close()
+            
+            # Print CSV file locations
+            print(f"\nTraining metrics automatically saved:")
+            print(f"   Episode metrics: results/training_logs/REINFORCE_episode_metrics.csv")
+            print(f"   Step metrics: results/training_logs/REINFORCE_step_metrics.csv")
+            print(f"   Training plots: results/training_logs/REINFORCE_training_plots.png")
+            print(f"   Tensorboard logs: tensorboard_logs/reinforce/")
+            
             return {
                 'training_time': str(training_time),
                 'num_episodes': num_episodes,
                 'final_avg_reward': np.mean(recent_rewards),
                 'best_avg_reward': best_avg_reward,
                 'final_model_path': final_model_path,
-                'config_path': config_path
+                'config_path': config_path,
+                'episode_metrics_csv': 'results/training_logs/REINFORCE_episode_metrics.csv',
+                'step_metrics_csv': 'results/training_logs/REINFORCE_step_metrics.csv'
             }
             
         except KeyboardInterrupt:
@@ -399,6 +457,8 @@ class REINFORCEAgent:
             # Save interrupted model
             interrupted_path = os.path.join(save_path, "reinforce_interrupted.pth")
             self.save_model(interrupted_path)
+            training_logger.save_final_summary()
+            writer.close()
             return None
     
     def evaluate(self, env: TrafficJunctionEnv, n_episodes: int = 10) -> Tuple[float, float]:
@@ -647,7 +707,6 @@ def main_training_experiment():
 
 if __name__ == "__main__":
     print("Rwanda Traffic Flow Optimization - REINFORCE Training")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Algorithm: REINFORCE (Policy Gradient Method)")
     print()
     
