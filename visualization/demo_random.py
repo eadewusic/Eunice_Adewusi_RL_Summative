@@ -17,6 +17,7 @@ import random
 import imageio
 import numpy as np
 from typing import List
+import pygame
 
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -62,7 +63,7 @@ class RandomAgent:
         return f"Unknown Action {action}"
 
 def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200, 
-                   export_gif: bool = True, gif_filename: str = "traffic_random_demo.gif"):
+                   export_gif: bool = True, gif_filename: str = "traffic_random_demo.gif", show_window: bool = True):
     """
     Run the random action demonstration
     
@@ -71,16 +72,18 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
         max_steps_per_episode: Maximum steps per episode
         export_gif: Whether to export GIF
         gif_filename: Name of the GIF file
+        show_window: Whether to show the pygame window
     """
     
-    print("🚦 Rwanda Traffic Junction - Random Action Demo")
+    print("Rwanda Traffic Junction - Random Action Demo")
     print("=" * 60)
     print(f"Running {episodes} episodes with random actions...")
     print("This demonstrates the environment without any trained model.")
     print()
     
-    # Create environment
-    env = TrafficJunctionEnv(render_mode="rgb_array" if export_gif else "human")
+    # Create environment - ALWAYS use human mode if showing window
+    render_mode = "human" if show_window else None
+    env = TrafficJunctionEnv(render_mode=render_mode)
     agent = RandomAgent(env.action_space.n)
     
     # Create visualizer
@@ -118,7 +121,7 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
                 episode_reward += reward
                 episode_steps += 1
                 
-                # Render environment
+                # Render environment - always render and update display
                 frame = visualizer.render(action_taken=action)
                 
                 # Store frame for GIF (every 5th frame to reduce file size)
@@ -163,7 +166,7 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
             
     except KeyboardInterrupt:
         print("\nDemo interrupted by user.")
-    
+
     finally:
         # Overall statistics
         print("\n" + "=" * 60)
@@ -175,25 +178,29 @@ def run_random_demo(episodes: int = 3, max_steps_per_episode: int = 200,
         print(f"Total Reward: {total_reward:.2f}")
         print(f"Average Reward per Episode: {total_reward / episodes:.2f}")
         print(f"Total Vehicles Processed: {total_vehicles_processed}")
-        print(f"Average Vehicles per Episode: {total_vehicles_processed / episodes:.1f}")
         
         # Export GIF if requested
         if export_gif and gif_frames:
-            print(f"\n📹 Exporting GIF with {len(gif_frames)} frames...")
+            print(f"\nExporting GIF with {len(gif_frames)} frames...")
             try:
-                imageio.mimsave(gif_filename, gif_frames, fps=8, loop=0)
-                print(f"✅ GIF saved as: {gif_filename}")
-                print(f"   File size: ~{os.path.getsize(gif_filename) / 1024 / 1024:.1f} MB")
+                # Ensure frames are valid
+                valid_frames = [frame for frame in gif_frames if frame.size > 0]
+                if valid_frames:
+                    imageio.mimsave(gif_filename, valid_frames, fps=6, loop=0)
+                    print(f"GIF saved as: {gif_filename}")
+                    file_size = os.path.getsize(gif_filename) / 1024 / 1024
+                    print(f"   File size: ~{file_size:.1f} MB")
+                else:
+                    print("No valid frames captured for GIF")
             except Exception as e:
-                print(f"❌ Error saving GIF: {e}")
+                print(f"Error saving GIF: {e}")
         
         # Clean up
         visualizer.close()
         env.close()
-        
-        print("\n🎯 Random action demonstration completed!")
+
+        print("\nRandom action demonstration completed!")
         print("This shows the environment dynamics without any intelligent agent.")
-        print("Next step: Train RL agents (DQN, PPO, REINFORCE, Actor-Critic) for optimization.")
 
 def analyze_random_performance():
     """
@@ -251,8 +258,7 @@ def analyze_random_performance():
     }
 
 if __name__ == "__main__":
-    print("🇷🇼 Rwanda Traffic Flow Optimization - Random Demo")
-    print("Assignment: Mission-Based Reinforcement Learning")
+    print("Rwanda Traffic Flow Optimization - Random Demo")
     print("Environment: Traffic light control to replace road wardens")
     print()
     
@@ -261,7 +267,7 @@ if __name__ == "__main__":
         episodes=3,
         max_steps_per_episode=150,
         export_gif=True,
-        gif_filename="rwanda_traffic_random_demo.gif"
+        gif_filename="traffic_random_demo.gif"
     )
     
     # Analyze random baseline
