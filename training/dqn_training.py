@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 import json
 from datetime import datetime
-import torch
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,12 +22,89 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Stable Baselines3 imports
 from stable_baselines3 import DQN
 from stable_baselines3.common.env_util import make_vec_env
-from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold, BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.evaluation import evaluate_policy
 
 # Environment imports
 from environment.traffic_junction_env import TrafficJunctionEnv
+from training.training_logger import TrainingLogger, StepMetricsCollector, create_training_plots
+
+class DQNLoggingCallback(BaseCallback):
+    """
+    Custom callback for DQN that logs detailed training metrics to CSV
+    """
+    
+    def __init__(self, algorithm_name: str = "DQN", verbose: int = 0):
+        super().__init__(verbose)
+        self.algorithm_name = algorithm_name
+        self.logger = None
+        self.episode_count = 0
+        self.current_episode_reward = 0
+        self.current_episode_length = 0
+        self.episode_start_step = 0
+        
+    def _on_training_start(self) -> None:
+        """Initialize logger when training starts"""
+        self.logger = TrainingLogger(self.algorithm_name)
+        print(f"Started logging {self.algorithm_name} training metrics")
+    
+    def _on_step(self) -> bool:
+        """Called after each step"""
+        # Get current environment info
+        if hasattr(self.training_env, 'get_attr'):
+            # For vectorized environments
+            env_infos = self.training_env.get_attr('unwrapped')[0]
+            if hasattr(env_infos, 'get_info'):
+                info = env_infos.get_info()
+            else:
+                info = {}
+        else:
+            info = {}
+        
+        # Extract step metrics
+        step_data = StepMetricsCollector.extract_step_metrics(
+            env_info=info,
+            episode=self.episode_count,
+            step_in_episode=self.current_episode_length,
+            action=0,  # Would need to track this separately for DQN
+            reward=0,  # Would need to track this separately 
+            cumulative_reward=self.current_episode_reward
+        )
+        
+        # Log step
+        if self.logger:
+            self.logger.log_step(step_data)
+        
+        self.current_episode_length += 1
+        
+        return True
+    
+    def _on_rollout_end(self) -> None:
+        """Called at the end of each rollout (episode for DQN)"""
+        # Log episode completion
+        if self.logger and self.current_episode_length > 0:
+            episode_data = {
+                'episode_reward': self.current_episode_reward,
+                'episode_length': self.current_episode_length,
+                'vehicles_processed': 0,  # Would need to extract from env
+                'total_waiting_time': 0,
+                'final_queue_length': 0
+            }
+            
+            self.logger.log_episode(episode_data)
+            self.episode_count += 1
+            
+            # Reset for next episode
+            self.current_episode_reward = 0
+            self.current_episode_length = 0
+    
+    def _on_training_end(self) -> None:
+        """Called when training ends"""
+        if self.logger:
+            self.logger.save_final_summary()
+            create_training_plots(self.algorithm_name)
+            print(f"{self.algorithm_name} training metrics saved to CSV files")
 
 class DQNTrafficAgent:
     """
@@ -126,7 +202,7 @@ class DQNTrafficAgent:
               eval_env=None,
               save_path: str = "models/dqn/") -> Dict:
         """
-        Train the DQN agent
+        Train the DQN agent with automatic CSV logging
         
         Args:
             total_timesteps: Total training timesteps
@@ -163,13 +239,19 @@ class DQNTrafficAgent:
             verbose=self.verbose
         )
         
+        # Create logging callback for CSV metrics
+        logging_callback = DQNLoggingCallback(algorithm_name="DQN", verbose=self.verbose)
+        
+        # Combine callbacks
+        callbacks = [eval_callback, logging_callback]
+        
         # Train the model
         start_time = datetime.now()
         
         try:
             self.model.learn(
                 total_timesteps=total_timesteps,
-                callback=eval_callback,
+                callback=callbacks,
                 progress_bar=True
             )
             
@@ -186,11 +268,19 @@ class DQNTrafficAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
+            # Print CSV file locations
+            print(f"\nTraining metrics automatically saved:")
+            print(f"   Episode metrics: results/training_logs/DQN_episode_metrics.csv")
+            print(f"   Step metrics: results/training_logs/DQN_step_metrics.csv")
+            print(f"   Training plots: results/training_logs/DQN_training_plots.png")
+            
             return {
                 'training_time': str(training_time),
                 'total_timesteps': total_timesteps,
                 'final_model_path': final_model_path,
-                'config_path': config_path
+                'config_path': config_path,
+                'episode_metrics_csv': 'results/training_logs/DQN_episode_metrics.csv',
+                'step_metrics_csv': 'results/training_logs/DQN_step_metrics.csv'
             }
             
         except KeyboardInterrupt:
@@ -337,7 +427,7 @@ def hyperparameter_tuning_experiment():
             best_config = result
     
     if best_config:
-        print(f"\n🏆 Best Configuration: {best_config['config_name']}")
+        print(f"\nBest Configuration: {best_config['config_name']}")
         print(f"   Reward: {best_config['mean_reward']:.2f}")
         print("   Hyperparameters:")
         for key, value in best_config['hyperparameters'].items():
@@ -435,7 +525,3 @@ if __name__ == "__main__":
     trained_agent = main_training_experiment()
     
     print("\nDQN training pipeline completed!")
-    print("Next steps:")
-    print("1. Run similar training for REINFORCE, PPO, and Actor-Critic")
-    print("2. Compare all algorithms using evaluation metrics")
-    print("3. Create performance visualizations for the report")

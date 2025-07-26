@@ -27,6 +27,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from environment.traffic_junction_env import TrafficJunctionEnv
 from environment.traffic_rendering import TrafficVisualizer
+from training.training_logger import TrainingLogger, StepMetricsCollector, create_training_plots
 
 class PolicyNetwork(nn.Module):
     """
@@ -663,7 +664,3 @@ if __name__ == "__main__":
     trained_agent = main_training_experiment()
     
     print("\nREINFORCE training pipeline completed!")
-    print("Key insights:")
-    print("- Policy gradient methods learn directly from episodes")
-    print("- Baseline reduces variance in gradient estimates")
-    print("- Monte Carlo sampling provides unbiased gradient estimates")

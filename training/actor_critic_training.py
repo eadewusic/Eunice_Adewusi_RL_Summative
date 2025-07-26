@@ -27,6 +27,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from environment.traffic_junction_env import TrafficJunctionEnv
 from environment.traffic_rendering import TrafficVisualizer
+from training.training_logger import TrainingLogger, StepMetricsCollector, create_training_plots
 
 class ActorNetwork(nn.Module):
     """
@@ -355,7 +356,7 @@ class ActorCriticAgent:
               save_path: str = "models/actor_critic/",
               verbose: bool = True) -> Dict:
         """
-        Train the Actor-Critic agent
+        Train the Actor-Critic agent with automatic CSV logging
         
         Args:
             env: Training environment
@@ -379,6 +380,9 @@ class ActorCriticAgent:
         
         # Create save directory
         os.makedirs(save_path, exist_ok=True)
+        
+        # Initialize training logger
+        logger = TrainingLogger("Actor-Critic")
         
         # Training statistics
         recent_rewards = deque(maxlen=100)
@@ -418,6 +422,17 @@ class ActorCriticAgent:
                     batch_log_probs.append(log_prob)
                     batch_values.append(value)
                     
+                    # Log step metrics
+                    step_data = StepMetricsCollector.extract_step_metrics(
+                        env_info=info,
+                        episode=episode,
+                        step_in_episode=step,
+                        action=action,
+                        reward=reward,
+                        cumulative_reward=episode_reward + reward
+                    )
+                    logger.log_step(step_data)
+                    
                     # Update for next iteration
                     state = next_state
                     episode_reward += reward
@@ -443,6 +458,14 @@ class ActorCriticAgent:
                     # Check if episode ended
                     if done:
                         break
+                
+                # Log episode metrics
+                episode_data = StepMetricsCollector.extract_episode_metrics(
+                    episode_reward=episode_reward,
+                    episode_length=episode_length,
+                    final_info=info
+                )
+                logger.log_episode(episode_data)
                 
                 # Record episode statistics
                 self.episode_rewards_history.append(episode_reward)
@@ -474,7 +497,7 @@ class ActorCriticAgent:
                         self.save_model(best_model_path)
                         
                         if verbose:
-                            print(f"🏆 New best average reward: {best_avg_reward:.2f} - Model saved")
+                            print(f"New best average reward: {best_avg_reward:.2f} - Model saved")
             
             # Training completed
             training_time = datetime.now() - start_time
@@ -493,13 +516,25 @@ class ActorCriticAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
+            # Finalize logger
+            logger.save_final_summary()
+            create_training_plots("Actor-Critic")
+            
+            # Print CSV file locations
+            print(f"\nTraining metrics automatically saved:")
+            print(f"   Episode metrics: results/training_logs/Actor-Critic_episode_metrics.csv")
+            print(f"   Step metrics: results/training_logs/Actor-Critic_step_metrics.csv")
+            print(f"   Training plots: results/training_logs/Actor-Critic_training_plots.png")
+            
             return {
                 'training_time': str(training_time),
                 'num_episodes': num_episodes,
                 'final_avg_reward': np.mean(recent_rewards),
                 'best_avg_reward': best_avg_reward,
                 'final_model_path': final_model_path,
-                'config_path': config_path
+                'config_path': config_path,
+                'episode_metrics_csv': 'results/training_logs/Actor-Critic_episode_metrics.csv',
+                'step_metrics_csv': 'results/training_logs/Actor-Critic_step_metrics.csv'
             }
             
         except KeyboardInterrupt:
@@ -507,6 +542,7 @@ class ActorCriticAgent:
             # Save interrupted model
             interrupted_path = os.path.join(save_path, "ac_interrupted.pth")
             self.save_model(interrupted_path)
+            logger.save_final_summary()
             return None
     
     def evaluate(self, env: TrafficJunctionEnv, n_episodes: int = 10) -> Tuple[float, float]:
@@ -665,8 +701,3 @@ if __name__ == "__main__":
     trained_agent = main_training_experiment()
     
     print("\nActor-Critic training completed!")
-    print("Key features of Actor-Critic:")
-    print("- Combines value-based and policy-based learning")
-    print("- Actor learns policy, Critic learns value function")
-    print("- TD(0) updates for fast learning")
-    print("- Lower variance than pure policy gradient methods")

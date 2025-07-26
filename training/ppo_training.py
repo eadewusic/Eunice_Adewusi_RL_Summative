@@ -22,13 +22,92 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Stable Baselines3 imports
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
-from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold, BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 
 # Environment imports
 from environment.traffic_junction_env import TrafficJunctionEnv
+from training.training_logger import TrainingLogger, StepMetricsCollector, create_training_plots
+
+class PPOLoggingCallback(BaseCallback):
+    """
+    Custom callback for PPO that logs detailed training metrics to CSV
+    """
+    
+    def __init__(self, algorithm_name: str = "PPO", verbose: int = 0):
+        super().__init__(verbose)
+        self.algorithm_name = algorithm_name
+        self.logger = None
+        self.episode_count = 0
+        self.current_episode_reward = 0
+        self.current_episode_length = 0
+        
+    def _on_training_start(self) -> None:
+        """Initialize logger when training starts"""
+        self.logger = TrainingLogger(self.algorithm_name)
+        print(f"Started logging {self.algorithm_name} training metrics")
+    
+    def _on_step(self) -> bool:
+        """Called after each step"""
+        # For vectorized environments, we need to handle multiple envs
+        if hasattr(self.training_env, 'get_attr'):
+            try:
+                # Get environment info from first environment
+                env_infos = self.training_env.get_attr('get_info')
+                if env_infos and callable(env_infos[0]):
+                    info = env_infos[0]()
+                else:
+                    info = {}
+            except:
+                info = {}
+        else:
+            info = {}
+        
+        # Extract step metrics
+        step_data = StepMetricsCollector.extract_step_metrics(
+            env_info=info,
+            episode=self.episode_count,
+            step_in_episode=self.current_episode_length,
+            action=0,  # Would need to extract from rollout buffer
+            reward=0,  # Would need to extract from rollout buffer
+            cumulative_reward=self.current_episode_reward
+        )
+        
+        # Log step
+        if self.logger:
+            self.logger.log_step(step_data)
+        
+        self.current_episode_length += 1
+        
+        return True
+    
+    def _on_rollout_end(self) -> None:
+        """Called at the end of each rollout"""
+        # PPO uses rollouts, so we estimate episodes
+        if self.logger and self.current_episode_length > 0:
+            episode_data = {
+                'episode_reward': self.current_episode_reward,
+                'episode_length': self.current_episode_length,
+                'vehicles_processed': 0,
+                'total_waiting_time': 0,
+                'final_queue_length': 0
+            }
+            
+            self.logger.log_episode(episode_data)
+            self.episode_count += 1
+            
+            # Reset for next episode
+            self.current_episode_reward = 0
+            self.current_episode_length = 0
+    
+    def _on_training_end(self) -> None:
+        """Called when training ends"""
+        if self.logger:
+            self.logger.save_final_summary()
+            create_training_plots(self.algorithm_name)
+            print(f"{self.algorithm_name} training metrics saved to CSV files")
 
 class PPOTrafficAgent:
     """
@@ -129,7 +208,7 @@ class PPOTrafficAgent:
               eval_env=None,
               save_path: str = "models/ppo/") -> Dict:
         """
-        Train the PPO agent
+        Train the PPO agent with automatic CSV logging
         
         Args:
             total_timesteps: Total training timesteps
@@ -166,11 +245,17 @@ class PPOTrafficAgent:
             verbose=self.verbose
         )
         
+        # Create logging callback for CSV metrics
+        logging_callback = PPOLoggingCallback(algorithm_name="PPO", verbose=self.verbose)
+        
         # Optional: Stop training when reward threshold is reached
         stop_callback = StopTrainingOnRewardThreshold(
             reward_threshold=200,  # Adjust based on environment
             verbose=1
         )
+        
+        # Combine callbacks
+        callbacks = [eval_callback, logging_callback, stop_callback]
         
         # Train the model
         start_time = datetime.now()
@@ -178,7 +263,7 @@ class PPOTrafficAgent:
         try:
             self.model.learn(
                 total_timesteps=total_timesteps,
-                callback=[eval_callback, stop_callback],
+                callback=callbacks,
                 progress_bar=True
             )
             
@@ -195,11 +280,19 @@ class PPOTrafficAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
+            # Print CSV file locations
+            print(f"\nTraining metrics automatically saved:")
+            print(f"   Episode metrics: results/training_logs/PPO_episode_metrics.csv")
+            print(f"   Step metrics: results/training_logs/PPO_step_metrics.csv")
+            print(f"   Training plots: results/training_logs/PPO_training_plots.png")
+            
             return {
                 'training_time': str(training_time),
                 'total_timesteps': total_timesteps,
                 'final_model_path': final_model_path,
-                'config_path': config_path
+                'config_path': config_path,
+                'episode_metrics_csv': 'results/training_logs/PPO_episode_metrics.csv',
+                'step_metrics_csv': 'results/training_logs/PPO_step_metrics.csv'
             }
             
         except KeyboardInterrupt:
@@ -568,8 +661,3 @@ if __name__ == "__main__":
     trained_agent = main_training_experiment()
     
     print("\nPPO training pipeline completed!")
-    print("Key advantages of PPO:")
-    print("- Stable training through clipped objective function")
-    print("- Sample efficient due to multiple epochs per batch")
-    print("- Actor-critic architecture combines value and policy learning")
-    print("- Generalized Advantage Estimation (GAE) for better variance-bias trade-off")

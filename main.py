@@ -12,12 +12,6 @@ import sys
 import os
 from typing import Dict, Any
 
-def run_random_demo():
-    """Run random action demonstration"""
-    print("Running Random Action Demo...")
-    from visualization.demo_random import run_random_demo
-    run_random_demo(episodes=3, export_gif=True)
-
 def run_dqn_training():
     """Run DQN training experiment"""
     print("Running DQN Training...")
@@ -141,43 +135,6 @@ def run_evaluation():
         print(f"Evaluation failed: {e}")
         print("Please ensure models are trained and evaluation script is available")
 
-def run_visualization():
-    """Run visualization of trained agent"""
-    print("Running Trained Agent Visualization...")
-    
-    try:
-        from visualization.record_video import create_assignment_video
-        video_path = create_assignment_video()
-        
-        if video_path:
-            print(f"Video created successfully: {video_path}")
-            print("3-minute demonstration video ready for assignment submission")
-        else:
-            print("Video creation failed")
-            
-    except Exception as e:
-        print(f"Video creation failed: {e}")
-        print("Troubleshooting:")
-        print("1. Ensure trained models exist (run training first)")
-        print("2. Check video recording dependencies")
-        print("3. Try: python main.py --train-all")
-
-def run_quick_demo():
-    """Run quick demo video for testing"""
-    print("Creating Quick Demo Video...")
-    
-    try:
-        from visualization.record_video import create_quick_demo_video
-        video_path = create_quick_demo_video()
-        
-        if video_path:
-            print(f"Quick demo video created: {video_path}")
-        else:
-            print("Quick demo creation failed")
-            
-    except Exception as e:
-        print(f"Quick demo failed: {e}")
-
 def print_project_info():
     """Print project information and structure"""
     print("🇷🇼 Rwanda Traffic Flow Optimization Project")
@@ -215,7 +172,6 @@ def main():
         epilog="""
 Examples:
   python main.py --info                 # Show project information
-  python main.py --demo                 # Run random action demo (creates GIF)
   python main.py --train-dqn            # Train DQN agent only
   python main.py --train-reinforce      # Train REINFORCE agent only
   python main.py --train-ppo            # Train PPO agent only
@@ -223,14 +179,11 @@ Examples:
   python main.py --train-all            # Train all RL algorithms
   python main.py --evaluate             # Evaluate trained models
   python main.py --visualize            # Show trained agent in action (3-minute video)
-  python main.py --quick-demo           # Create quick demo video (30 seconds)
         """
     )
     
     parser.add_argument('--info', action='store_true',
                        help='Show project information and structure')
-    parser.add_argument('--demo', action='store_true',
-                       help='Run random action demonstration (creates GIF)')
     parser.add_argument('--train-dqn', action='store_true',
                        help='Train DQN agent only')
     parser.add_argument('--train-reinforce', action='store_true',
@@ -245,8 +198,6 @@ Examples:
                        help='Evaluate and compare all trained models')
     parser.add_argument('--visualize', action='store_true',
                        help='Visualize trained agent performance (creates 3-minute video)')
-    parser.add_argument('--quick-demo', action='store_true',
-                       help='Create quick 30-second demo video')
     
     args = parser.parse_args()
     
@@ -260,9 +211,6 @@ Examples:
     try:
         if args.info:
             print_project_info()
-        
-        if args.demo:
-            run_random_demo()
         
         if args.train_dqn:
             run_dqn_training()
@@ -284,9 +232,6 @@ Examples:
         
         if args.visualize:
             run_visualization()
-            
-        if args.quick_demo:
-            run_quick_demo()
             
     except KeyboardInterrupt:
         print("\nOperation interrupted by user")
@@ -310,6 +255,7 @@ def setup_project_structure():
         'tensorboard_logs/ppo',
         'tensorboard_logs/actor_critic',
         'results',
+        'results/training_logs',  # For CSV training metrics
         'videos',
         'evaluation'
     ]
@@ -320,7 +266,7 @@ def setup_project_structure():
     print("Project directories created successfully")
 
 if __name__ == "__main__":
-    print("🚦 Rwanda Traffic Junction - RL Optimization System")
+    print("Rwanda Traffic Junction - RL Optimization System")
     print("Assignment: Mission-Based Reinforcement Learning")
     print("Objective: Replace road wardens with intelligent agents")
     print()
