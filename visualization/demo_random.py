@@ -322,7 +322,7 @@ def create_random_actions_gif():
         show_window=True
     )
     
-    print("\Random Traffic Actions GIF created!")
+    print("Random Traffic Actions GIF created!")
 
 if __name__ == "__main__":
     print("Rwanda Traffic Flow Optimization - Random Demo")
