@@ -1,0 +1,9 @@
+Training Summary - DQN
+==================================================
+
+total_episodes: 25000
+total_steps: 100000
+mean_reward_100: 0.0
+training_time_hours: 0.09349118365181817
+episode_log_path: results/training_logs/DQN_episode_metrics.csv
+step_log_path: results/training_logs/DQN_step_metrics.csv

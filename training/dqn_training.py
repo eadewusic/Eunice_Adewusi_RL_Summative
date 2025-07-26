@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 import json
 from datetime import datetime
+import torch
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -38,7 +39,7 @@ class DQNLoggingCallback(BaseCallback):
     def __init__(self, algorithm_name: str = "DQN", verbose: int = 0):
         super().__init__(verbose)
         self.algorithm_name = algorithm_name
-        self.logger = None
+        self.training_logger = None  # Changed from self.logger to self.training_logger
         self.episode_count = 0
         self.current_episode_reward = 0
         self.current_episode_length = 0
@@ -46,7 +47,7 @@ class DQNLoggingCallback(BaseCallback):
         
     def _on_training_start(self) -> None:
         """Initialize logger when training starts"""
-        self.logger = TrainingLogger(self.algorithm_name)
+        self.training_logger = TrainingLogger(self.algorithm_name)  # Updated reference
         print(f"Started logging {self.algorithm_name} training metrics")
     
     def _on_step(self) -> bool:
@@ -73,8 +74,8 @@ class DQNLoggingCallback(BaseCallback):
         )
         
         # Log step
-        if self.logger:
-            self.logger.log_step(step_data)
+        if self.training_logger:  # Updated reference
+            self.training_logger.log_step(step_data)
         
         self.current_episode_length += 1
         
@@ -83,7 +84,7 @@ class DQNLoggingCallback(BaseCallback):
     def _on_rollout_end(self) -> None:
         """Called at the end of each rollout (episode for DQN)"""
         # Log episode completion
-        if self.logger and self.current_episode_length > 0:
+        if self.training_logger and self.current_episode_length > 0:  # Updated reference
             episode_data = {
                 'episode_reward': self.current_episode_reward,
                 'episode_length': self.current_episode_length,
@@ -92,7 +93,7 @@ class DQNLoggingCallback(BaseCallback):
                 'final_queue_length': 0
             }
             
-            self.logger.log_episode(episode_data)
+            self.training_logger.log_episode(episode_data)  # Updated reference
             self.episode_count += 1
             
             # Reset for next episode
@@ -101,8 +102,8 @@ class DQNLoggingCallback(BaseCallback):
     
     def _on_training_end(self) -> None:
         """Called when training ends"""
-        if self.logger:
-            self.logger.save_final_summary()
+        if self.training_logger:  # Updated reference
+            self.training_logger.save_final_summary()
             create_training_plots(self.algorithm_name)
             print(f"{self.algorithm_name} training metrics saved to CSV files")
 

@@ -1,0 +1,25 @@
+{
+  "algorithm": "DQN",
+  "mean_reward": -1371.2,
+  "std_reward": 644.7992400739939,
+  "hyperparameters": {
+    "learning_rate": 0.0005,
+    "buffer_size": 50000,
+    "learning_starts": 1000,
+    "batch_size": 64,
+    "tau": 1.0,
+    "gamma": 0.99,
+    "target_update_interval": 1000,
+    "exploration_fraction": 0.3,
+    "exploration_initial_eps": 1.0,
+    "exploration_final_eps": 0.05
+  },
+  "training_stats": {
+    "training_time": "0:05:37.938999",
+    "total_timesteps": 100000,
+    "final_model_path": "models/dqn/dqn_traffic_final.zip",
+    "config_path": "models/dqn/dqn_config.json",
+    "episode_metrics_csv": "results/training_logs/DQN_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/DQN_step_metrics.csv"
+  }
+}
