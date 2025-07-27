@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 import json
 from datetime import datetime
+import torch
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -22,7 +23,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Stable Baselines3 imports
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
-from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold, BaseCallback
+from stable_baselines3.common.callbacks import EvalCallback, BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
@@ -39,63 +40,49 @@ class PPOLoggingCallback(BaseCallback):
     def __init__(self, algorithm_name: str = "PPO", verbose: int = 0):
         super().__init__(verbose)
         self.algorithm_name = algorithm_name
-        self.logger = None
+        self.training_logger = None  # Changed from self.logger to match REINFORCE pattern
         self.episode_count = 0
         self.current_episode_reward = 0
         self.current_episode_length = 0
         
     def _on_training_start(self) -> None:
         """Initialize logger when training starts"""
-        self.logger = TrainingLogger(self.algorithm_name)
+        self.training_logger = TrainingLogger(self.algorithm_name)  # Updated reference
         print(f"Started logging {self.algorithm_name} training metrics")
     
     def _on_step(self) -> bool:
         """Called after each step"""
-        # For vectorized environments, we need to handle multiple envs
-        if hasattr(self.training_env, 'get_attr'):
-            try:
-                # Get environment info from first environment
-                env_infos = self.training_env.get_attr('get_info')
-                if env_infos and callable(env_infos[0]):
-                    info = env_infos[0]()
-                else:
-                    info = {}
-            except:
-                info = {}
-        else:
-            info = {}
-        
-        # Extract step metrics
-        step_data = StepMetricsCollector.extract_step_metrics(
-            env_info=info,
-            episode=self.episode_count,
-            step_in_episode=self.current_episode_length,
-            action=0,  # Would need to extract from rollout buffer
-            reward=0,  # Would need to extract from rollout buffer
-            cumulative_reward=self.current_episode_reward
-        )
-        
-        # Log step
-        if self.logger:
-            self.logger.log_step(step_data)
-        
+        # Minimal step logging - just track episode progress
         self.current_episode_length += 1
-        
         return True
     
     def _on_rollout_end(self) -> None:
-        """Called at the end of each rollout"""
-        # PPO uses rollouts, so we estimate episodes
-        if self.logger and self.current_episode_length > 0:
+        """Called at the end of each rollout (episode-level logging)"""
+        # Focus on episode-level logging like DQN and REINFORCE
+        if self.training_logger and self.current_episode_length > 0:  # Updated reference
+            # For vectorized environments, we need to handle multiple envs
+            if hasattr(self.training_env, 'get_attr'):
+                try:
+                    # Get environment info from first environment
+                    env_infos = self.training_env.get_attr('unwrapped')
+                    if env_infos and hasattr(env_infos[0], 'get_info'):
+                        info = env_infos[0].get_info()
+                    else:
+                        info = {}
+                except:
+                    info = {}
+            else:
+                info = {}
+            
             episode_data = {
                 'episode_reward': self.current_episode_reward,
                 'episode_length': self.current_episode_length,
-                'vehicles_processed': 0,
-                'total_waiting_time': 0,
-                'final_queue_length': 0
+                'vehicles_processed': info.get('vehicles_processed', 0),
+                'total_waiting_time': info.get('total_waiting_time', 0),
+                'final_queue_length': info.get('queue_length', 0)
             }
             
-            self.logger.log_episode(episode_data)
+            self.training_logger.log_episode(episode_data)  # Updated reference
             self.episode_count += 1
             
             # Reset for next episode
@@ -104,8 +91,8 @@ class PPOLoggingCallback(BaseCallback):
     
     def _on_training_end(self) -> None:
         """Called when training ends"""
-        if self.logger:
-            self.logger.save_final_summary()
+        if self.training_logger:  # Updated reference
+            self.training_logger.save_final_summary()
             create_training_plots(self.algorithm_name)
             print(f"{self.algorithm_name} training metrics saved to CSV files")
 
@@ -248,14 +235,8 @@ class PPOTrafficAgent:
         # Create logging callback for CSV metrics
         logging_callback = PPOLoggingCallback(algorithm_name="PPO", verbose=self.verbose)
         
-        # Optional: Stop training when reward threshold is reached
-        stop_callback = StopTrainingOnRewardThreshold(
-            reward_threshold=200,  # Adjust based on environment
-            verbose=1
-        )
-        
-        # Combine callbacks
-        callbacks = [eval_callback, logging_callback, stop_callback]
+        # Combine callbacks (removed stop_callback to match DQN/REINFORCE pattern)
+        callbacks = [eval_callback, logging_callback]
         
         # Train the model
         start_time = datetime.now()
@@ -280,11 +261,12 @@ class PPOTrafficAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
-            # Print CSV file locations
+            # Print CSV file locations (same as DQN and REINFORCE)
             print(f"\nTraining metrics automatically saved:")
             print(f"   Episode metrics: results/training_logs/PPO_episode_metrics.csv")
             print(f"   Step metrics: results/training_logs/PPO_step_metrics.csv")
             print(f"   Training plots: results/training_logs/PPO_training_plots.png")
+            print(f"   Training summary: results/training_logs/PPO_training_summary.txt")
             
             return {
                 'training_time': str(training_time),
@@ -644,7 +626,6 @@ if __name__ == "__main__":
     import torch
     
     print("Rwanda Traffic Flow Optimization - PPO Training")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Algorithm: Proximal Policy Optimization (Advanced Policy Method)")
     print()
     
