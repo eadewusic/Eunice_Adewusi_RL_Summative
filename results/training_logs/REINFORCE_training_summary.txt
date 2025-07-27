@@ -1,0 +1,9 @@
+Training Summary - REINFORCE
+==================================================
+
+total_episodes: 850
+total_steps: 0
+mean_reward_100: -267.66
+training_time_hours: 0.013631628553072612
+episode_log_path: results/training_logs/REINFORCE_episode_metrics.csv
+step_log_path: results/training_logs/REINFORCE_step_metrics.csv

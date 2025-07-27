@@ -1,20 +1,26 @@
 {
   "algorithm": "REINFORCE",
-  "mean_reward": -354.5,
-  "std_reward": 128.74956310605486,
+  "mean_reward": -188.95,
+  "std_reward": 25.28532182907704,
+  "best_training_reward": -232.99,
+  "early_stop": true,
   "hyperparameters": {
-    "learning_rate": 0.001,
+    "learning_rate": 0.0005,
     "gamma": 0.99,
     "use_baseline": true,
     "network_architecture": "128-128-64",
-    "device": "cpu"
+    "device": "cpu",
+    "patience": 5
   },
   "training_stats": {
-    "training_time": "0:00:56.224202",
-    "num_episodes": 1500,
-    "final_avg_reward": -360.27,
-    "best_avg_reward": -213.46,
+    "training_time": "0:00:50.833353",
+    "num_episodes": 850,
+    "final_avg_reward": -267.66,
+    "best_avg_reward": -232.99,
+    "early_stop": true,
     "final_model_path": "models/reinforce/reinforce_traffic_final.pth",
-    "config_path": "models/reinforce/reinforce_config.json"
+    "config_path": "models/reinforce/reinforce_config.json",
+    "episode_metrics_csv": "results/training_logs/REINFORCE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/REINFORCE_step_metrics.csv"
   }
 }
