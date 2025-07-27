@@ -7,7 +7,7 @@ This script evaluates and compares all four trained RL algorithms:
 - PPO (Proximal Policy Optimization)
 - Actor-Critic
 
-It provides comprehensive performance analysis for the assignment report.
+It provides comprehensive performance analysis
 """
 
 import sys
@@ -185,10 +185,27 @@ class ComprehensiveEvaluator:
                     action = env.action_space.sample()
                 elif algorithm_name in ['DQN', 'PPO']:
                     action, _ = model.predict(obs, deterministic=True)
+                    # FIX: Convert numpy array to int
+                    if isinstance(action, np.ndarray):
+                        action = int(action.item())
+                    else:
+                        action = int(action)
                 elif algorithm_name == 'REINFORCE':
-                    action, _, _ = model.get_action(obs, training=False)
+                    result = model.get_action(obs, training=False)
+                    if len(result) == 2:
+                        action, _ = result
+                    else:
+                        action, _, _ = result
+                    # Ensure action is int
+                    action = int(action)
                 elif algorithm_name == 'Actor-Critic':
-                    action, _, _ = model.get_action(obs, training=False)
+                    result = model.get_action(obs, training=False)
+                    if len(result) == 2:
+                        action, _ = result
+                    else:
+                        action, _, _ = result
+                    # Ensure action is int
+                    action = int(action)
                 
                 # Take action
                 obs, reward, terminated, truncated, info = env.step(action)
@@ -198,7 +215,7 @@ class ComprehensiveEvaluator:
                 episode_length += 1
                 episode_queue_lengths.append(info['total_vehicles_waiting'])
                 episode_actions.append(action)
-                action_distributions[action] += 1
+                action_distributions[action] += 1  # Now action is guaranteed to be int
                 
                 # Track hidden states
                 hidden_states_distribution[info['hidden_state']] += 1
@@ -297,56 +314,87 @@ class ComprehensiveEvaluator:
         return entropy
     
     def evaluate_all_algorithms(self, models: Dict, n_episodes: int = 20) -> Dict:
-        """
-        Evaluate all algorithms and random baseline
-        
-        Args:
-            models: Dictionary of trained models
-            n_episodes: Number of episodes per algorithm
+            """
+            Evaluate all algorithms and random baseline
             
-        Returns:
-            Complete evaluation results
-        """
-        print("Starting Comprehensive Algorithm Evaluation")
-        print("=" * 60)
-        
-        all_results = {}
-        
-        # Evaluate trained models
-        for algorithm_name, model in models.items():
-            all_results[algorithm_name] = self.evaluate_single_algorithm(
-                model, algorithm_name, n_episodes
+            Args:
+                models: Dictionary of trained models
+                n_episodes: Number of episodes per algorithm
+                
+            Returns:
+                Complete evaluation results
+            """
+            print("Starting Comprehensive Algorithm Evaluation")
+            print("=" * 60)
+            
+            all_results = {}
+            
+            # Evaluate trained models
+            for algorithm_name, model in models.items():
+                all_results[algorithm_name] = self.evaluate_single_algorithm(
+                    model, algorithm_name, n_episodes
+                )
+            
+            # Evaluate random baseline
+            print("Evaluating Random Baseline...")
+            all_results['Random'] = self.evaluate_single_algorithm(
+                None, 'Random', n_episodes
             )
-        
-        # Evaluate random baseline
-        print("Evaluating Random Baseline...")
-        all_results['Random'] = self.evaluate_single_algorithm(
-            None, 'Random', n_episodes
-        )
-        
-        # Store results
-        self.evaluation_results = all_results
-        
-        # Save results
-        results_path = os.path.join(self.results_dir, 'comprehensive_evaluation.json')
-        with open(results_path, 'w') as f:
-            # Convert numpy types for JSON serialization
-            json_results = {}
-            for alg, results in all_results.items():
-                json_results[alg] = {}
-                for key, value in results.items():
-                    if isinstance(value, np.ndarray):
-                        json_results[alg][key] = value.tolist()
-                    elif isinstance(value, (np.integer, np.floating)):
-                        json_results[alg][key] = float(value)
-                    else:
-                        json_results[alg][key] = value
             
-            json.dump(json_results, f, indent=2)
-        
-        print(f"Evaluation results saved to {results_path}")
-        
-        return all_results
+            # Store results
+            self.evaluation_results = all_results
+            
+            # Save results with proper JSON serialization
+            results_path = os.path.join(self.results_dir, 'comprehensive_evaluation.json')
+            with open(results_path, 'w') as f:
+                # Convert numpy types for JSON serialization
+                json_results = {}
+                for alg, results in all_results.items():
+                    json_results[alg] = {}
+                    for key, value in results.items():
+                        if isinstance(value, np.ndarray):
+                            json_results[alg][key] = value.tolist()
+                        elif isinstance(value, (np.integer, np.int64)):
+                            json_results[alg][key] = int(value)
+                        elif isinstance(value, (np.floating, np.float64)):
+                            json_results[alg][key] = float(value)
+                        elif isinstance(value, dict):
+                            # Handle nested dictionaries (like action_distribution)
+                            converted_dict = {}
+                            for k, v in value.items():
+                                # Convert keys to strings if they're numpy types
+                                if isinstance(k, (np.integer, np.int64)):
+                                    key_str = str(int(k))
+                                else:
+                                    key_str = str(k)
+                                
+                                # Convert values
+                                if isinstance(v, (np.integer, np.int64)):
+                                    converted_dict[key_str] = int(v)
+                                elif isinstance(v, (np.floating, np.float64)):
+                                    converted_dict[key_str] = float(v)
+                                elif isinstance(v, dict):
+                                    # Handle nested nested dicts (like scenario_performance)
+                                    nested_dict = {}
+                                    for nk, nv in v.items():
+                                        if isinstance(nv, (np.integer, np.int64)):
+                                            nested_dict[str(nk)] = int(nv)
+                                        elif isinstance(nv, (np.floating, np.float64)):
+                                            nested_dict[str(nk)] = float(nv)
+                                        else:
+                                            nested_dict[str(nk)] = nv
+                                    converted_dict[key_str] = nested_dict
+                                else:
+                                    converted_dict[key_str] = v
+                            json_results[alg][key] = converted_dict
+                        else:
+                            json_results[alg][key] = value
+                
+                json.dump(json_results, f, indent=2)
+            
+            print(f"Evaluation results saved to {results_path}")
+            
+            return all_results
     
     def create_comparison_plots(self):
         """Create comprehensive comparison plots"""
@@ -508,7 +556,7 @@ class ComprehensiveEvaluator:
                 
                 f.write("**Traffic Management Efficiency:**\n")
                 f.write(f"- Vehicles Processed: {results['mean_vehicles_processed']:.1f} per episode\n")
-                f.write(f"- Queue Stability (σ): {results['queue_stability']:.2f}\n")
+                f.write(f"- Queue Stability (std dev): {results['queue_stability']:.2f}\n")
                 f.write(f"- Emergency Response: {results['mean_emergency_response']:.1f} steps\n\n")
                 
                 f.write("**Behavioral Analysis:**\n")
@@ -662,7 +710,6 @@ class ComprehensiveEvaluator:
 def main():
     """Main evaluation pipeline"""
     print("Rwanda Traffic Flow Optimization - Comprehensive Evaluation")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Objective: Compare all RL algorithms for traffic light optimization")
     print()
     
@@ -695,11 +742,6 @@ def main():
     
     print("\nComprehensive evaluation completed!")
     print(f"All results saved in: {evaluator.results_dir}")
-    print("\nNext steps for assignment:")
-    print("1. Review detailed analysis report")
-    print("2. Include comparison plots in PDF report")
-    print("3. Use summary statistics for quantitative analysis")
-    print("4. Create 3-minute video of best performing agent")
 
 if __name__ == "__main__":
     main()

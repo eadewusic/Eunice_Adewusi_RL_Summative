@@ -1,0 +1,6 @@
+Algorithm,Mean Reward,Traffic Throughput,Mean Queue Length,Episode Length,Emergency Response,Action Entropy
+DQN,-108.80 ± 2074.34,268.28,19.39,409,1.1,1.77
+PPO,-323.47 ± 190.60,0.00,47.99,39,inf,0.17
+REINFORCE,-513.13 ± 353.85,31.48,46.25,57,inf,0.82
+Actor-Critic,-601.50 ± 414.29,0.00,49.82,43,inf,0.16
+Random,-2115.80 ± 1569.90,196.38,31.72,334,11.8,3.17
