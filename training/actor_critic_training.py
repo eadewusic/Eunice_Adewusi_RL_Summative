@@ -29,6 +29,9 @@ from environment.traffic_junction_env import TrafficJunctionEnv
 from environment.traffic_rendering import TrafficVisualizer
 from training.training_logger import TrainingLogger, StepMetricsCollector, create_training_plots
 
+# Add tensorboard logging
+from torch.utils.tensorboard import SummaryWriter
+
 class ActorNetwork(nn.Module):
     """
     Actor network for policy representation
@@ -168,6 +171,10 @@ class ActorCriticAgent:
         self.critic_losses = []
         self.entropy_values = []
         
+        # Initialize logging components (same as REINFORCE)
+        self.training_logger = None
+        self.tensorboard_writer = None
+        
         # Hyperparameters
         self.hyperparameters = {
             'actor_lr': actor_lr,
@@ -198,6 +205,10 @@ class ActorCriticAgent:
             # Get action probabilities from actor
             action_probs = self.actor(state_tensor)
             
+            # Add small epsilon to prevent numerical issues
+            action_probs = action_probs + 1e-8
+            action_probs = action_probs / action_probs.sum()
+            
             # Get state value from critic
             value = self.critic(state_tensor)
             
@@ -206,11 +217,11 @@ class ActorCriticAgent:
                 action_dist = Categorical(action_probs)
                 action = action_dist.sample()
                 log_prob = action_dist.log_prob(action)
-                return action.item(), log_prob, value
+                return action.item(), log_prob, value.squeeze()
             else:
                 # Deterministic action for evaluation
                 action = torch.argmax(action_probs, dim=1)
-                return action.item(), None, value
+                return action.item(), None, value.squeeze()
     
     def update_networks(self, states: List[np.ndarray], actions: List[int], 
                        rewards: List[float], next_states: List[np.ndarray],
@@ -229,6 +240,9 @@ class ActorCriticAgent:
             values: List of state values
         """
         
+        if len(states) == 0:
+            return
+        
         # Convert to tensors
         states_tensor = torch.FloatTensor(np.array(states)).to(self.device)
         actions_tensor = torch.LongTensor(actions).to(self.device)
@@ -236,7 +250,15 @@ class ActorCriticAgent:
         next_states_tensor = torch.FloatTensor(np.array(next_states)).to(self.device)
         dones_tensor = torch.BoolTensor(dones).to(self.device)
         log_probs_tensor = torch.stack(log_probs).to(self.device)
-        values_tensor = torch.stack(values).squeeze().to(self.device)
+        
+        # Handle values tensor carefully
+        values_list = []
+        for value in values:
+            if value.dim() == 0:
+                values_list.append(value.unsqueeze(0))
+            else:
+                values_list.append(value.squeeze())
+        values_tensor = torch.stack(values_list).to(self.device)
         
         # Calculate returns and advantages
         returns, advantages = self._calculate_returns_and_advantages(
@@ -272,8 +294,13 @@ class ActorCriticAgent:
         
         # Calculate next state values
         with torch.no_grad():
-            next_values = self.critic(next_states).squeeze()
-            next_values[dones] = 0.0  # No value for terminal states
+            next_values = self.critic(next_states)
+            if next_values.dim() > 1:
+                next_values = next_values.squeeze(-1)
+            
+            # Handle done states - set next values to 0 for terminal states
+            if dones.any():
+                next_values = next_values * (~dones).float()
         
         # Calculate TD targets (returns)
         returns = rewards + self.gamma * next_values
@@ -378,11 +405,17 @@ class ActorCriticAgent:
             print(f"  {key}: {value}")
         print()
         
+        # Initialize logging infrastructure (same as REINFORCE)
+        self.training_logger = TrainingLogger("Actor-Critic")
+        
+        # Initialize tensorboard logging
+        os.makedirs("./tensorboard_logs/actor_critic/", exist_ok=True)
+        self.tensorboard_writer = SummaryWriter("./tensorboard_logs/actor_critic/ActorCritic_1")
+        
+        print("Started logging Actor-Critic training metrics")
+        
         # Create save directory
         os.makedirs(save_path, exist_ok=True)
-        
-        # Initialize training logger
-        logger = TrainingLogger("Actor-Critic")
         
         # Training statistics
         recent_rewards = deque(maxlen=100)
@@ -397,6 +430,8 @@ class ActorCriticAgent:
         batch_dones = []
         batch_log_probs = []
         batch_values = []
+        
+        global_step = 0
         
         try:
             for episode in range(num_episodes):
@@ -422,21 +457,11 @@ class ActorCriticAgent:
                     batch_log_probs.append(log_prob)
                     batch_values.append(value)
                     
-                    # Log step metrics
-                    step_data = StepMetricsCollector.extract_step_metrics(
-                        env_info=info,
-                        episode=episode,
-                        step_in_episode=step,
-                        action=action,
-                        reward=reward,
-                        cumulative_reward=episode_reward + reward
-                    )
-                    logger.log_step(step_data)
-                    
                     # Update for next iteration
                     state = next_state
                     episode_reward += reward
                     episode_length += 1
+                    global_step += 1
                     
                     # Update networks if batch is full or episode ended
                     if len(batch_states) >= update_frequency or done:
@@ -459,13 +484,28 @@ class ActorCriticAgent:
                     if done:
                         break
                 
-                # Log episode metrics
-                episode_data = StepMetricsCollector.extract_episode_metrics(
-                    episode_reward=episode_reward,
-                    episode_length=episode_length,
-                    final_info=info
-                )
-                logger.log_episode(episode_data)
+                # Log episode metrics (same as REINFORCE)
+                if self.training_logger and episode_length > 0:
+                    episode_data = {
+                        'episode_reward': episode_reward,
+                        'episode_length': episode_length,
+                        'vehicles_processed': info.get('vehicles_processed', 0),
+                        'total_waiting_time': info.get('total_waiting_time', 0),
+                        'final_queue_length': info.get('queue_length', 0)
+                    }
+                    
+                    self.training_logger.log_episode(episode_data)
+                
+                # Log to tensorboard
+                if self.tensorboard_writer:
+                    self.tensorboard_writer.add_scalar('episode/reward', episode_reward, episode)
+                    self.tensorboard_writer.add_scalar('episode/length', episode_length, episode)
+                    if self.actor_losses:
+                        self.tensorboard_writer.add_scalar('loss/actor', self.actor_losses[-1], episode)
+                    if self.critic_losses:
+                        self.tensorboard_writer.add_scalar('loss/critic', self.critic_losses[-1], episode)
+                    if self.entropy_values:
+                        self.tensorboard_writer.add_scalar('loss/entropy', self.entropy_values[-1], episode)
                 
                 # Record episode statistics
                 self.episode_rewards_history.append(episode_reward)
@@ -499,7 +539,15 @@ class ActorCriticAgent:
                         if verbose:
                             print(f"New best average reward: {best_avg_reward:.2f} - Model saved")
             
-            # Training completed
+            # Training completed - finalize logging (same as REINFORCE)
+            if self.training_logger:
+                self.training_logger.save_final_summary()
+                create_training_plots("Actor-Critic")
+                print("Actor-Critic training metrics saved to CSV files")
+            
+            if self.tensorboard_writer:
+                self.tensorboard_writer.close()
+            
             training_time = datetime.now() - start_time
             print(f"\nActor-Critic training completed in {training_time}")
             
@@ -516,15 +564,12 @@ class ActorCriticAgent:
             with open(config_path, 'w') as f:
                 json.dump(self.hyperparameters, f, indent=2)
             
-            # Finalize logger
-            logger.save_final_summary()
-            create_training_plots("Actor-Critic")
-            
-            # Print CSV file locations
+            # Print CSV file locations (same as REINFORCE)
             print(f"\nTraining metrics automatically saved:")
             print(f"   Episode metrics: results/training_logs/Actor-Critic_episode_metrics.csv")
             print(f"   Step metrics: results/training_logs/Actor-Critic_step_metrics.csv")
             print(f"   Training plots: results/training_logs/Actor-Critic_training_plots.png")
+            print(f"   Training summary: results/training_logs/Actor-Critic_training_summary.txt")
             
             return {
                 'training_time': str(training_time),
@@ -539,10 +584,17 @@ class ActorCriticAgent:
             
         except KeyboardInterrupt:
             print("\nTraining interrupted by user")
-            # Save interrupted model
+            
+            # Save interrupted model and close logging
+            if self.training_logger:
+                self.training_logger.save_final_summary()
+                create_training_plots("Actor-Critic")
+            
+            if self.tensorboard_writer:
+                self.tensorboard_writer.close()
+            
             interrupted_path = os.path.join(save_path, "ac_interrupted.pth")
             self.save_model(interrupted_path)
-            logger.save_final_summary()
             return None
     
     def evaluate(self, env: TrafficJunctionEnv, n_episodes: int = 10) -> Tuple[float, float]:
@@ -606,7 +658,13 @@ class ActorCriticAgent:
     
     def load_model(self, filepath: str):
         """Load model state"""
-        checkpoint = torch.load(filepath, map_location=self.device)
+        try:
+            # Try with weights_only=False for compatibility
+            checkpoint = torch.load(filepath, map_location=self.device, weights_only=False)
+        except Exception as e:
+            print(f"Warning: Could not load checkpoint - {e}")
+            print("Continuing with current model weights")
+            return
         
         self.actor.load_state_dict(checkpoint['actor_state_dict'])
         self.critic.load_state_dict(checkpoint['critic_state_dict'])
@@ -689,7 +747,6 @@ def main_training_experiment():
 
 if __name__ == "__main__":
     print("Rwanda Traffic Flow Optimization - Actor-Critic Training")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Algorithm: Actor-Critic (Hybrid Value-Policy Method)")
     print()
     

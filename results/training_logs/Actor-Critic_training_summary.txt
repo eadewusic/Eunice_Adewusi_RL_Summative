@@ -1,0 +1,9 @@
+Training Summary - Actor-Critic
+==================================================
+
+total_episodes: 1200
+total_steps: 0
+mean_reward_100: -265.5
+training_time_hours: 0.048272209101253086
+episode_log_path: results/training_logs/Actor-Critic_episode_metrics.csv
+step_log_path: results/training_logs/Actor-Critic_step_metrics.csv
