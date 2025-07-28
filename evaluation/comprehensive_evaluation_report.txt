@@ -1,0 +1,103 @@
+COMPREHENSIVE ALGORITHM EVALUATION REPORT
+============================================================
+Generated: 2025-07-28 18:34:28
+
+1. OVERALL PERFORMANCE SUMMARY
+----------------------------------------
+Rank Algorithm            Mean Reward     Std Dev      Improvement 
+---------------------------------------------------------------------------
+1    PPO                  -153.64         17.04        81.7        %
+2    REINFORCE_Improved   -189.64         25.04        77.4        %
+3    REINFORCE_Original   -241.96         30.38        71.2        %
+4    Actor_Critic         -272.00         32.56        67.6        %
+5    Random               -839.48         473.47       0.0         %
+6    DQN                  -1037.76        436.67       -23.6       %
+
+2. STATISTICAL ANALYSIS
+----------------------------------------
+Best Performing Algorithm: PPO
+  Mean Reward: -153.64 +/- 17.04
+  Mean Episode Length: 18.2 steps
+  Vehicles Processed: 0.0
+
+Algorithm Stability Rankings (by Coefficient of Variation):
+  1. PPO: 11.1% (Good)
+  2. Actor_Critic: 12.0% (Good)
+  3. REINFORCE_Original: 12.6% (Good)
+  4. REINFORCE_Improved: 13.2% (Good)
+  5. DQN: 42.1% (Poor)
+  6. Random: 56.4% (Poor)
+
+3. SCENARIO PERFORMANCE ANALYSIS
+----------------------------------------
+
+Morning Rush Scenario:
+  1. PPO: -158.73 +/- 20.06
+  2. REINFORCE_Improved: -191.73 +/- 22.86
+  3. REINFORCE_Original: -234.33 +/- 30.19
+  4. Actor_Critic: -264.00 +/- 35.49
+  5. Random: -789.47 +/- 436.74
+  6. DQN: -964.53 +/- 256.91
+
+Lunch Hour Scenario:
+  1. PPO: -216.60 +/- 27.31
+  2. REINFORCE_Improved: -270.27 +/- 48.96
+  3. REINFORCE_Original: -304.73 +/- 46.28
+  4. Actor_Critic: -372.67 +/- 58.41
+  5. DQN: -703.93 +/- 162.18
+  6. Random: -1629.07 +/- 447.75
+
+Evening Rush Scenario:
+  1. PPO: -163.20 +/- 17.30
+  2. REINFORCE_Improved: -193.40 +/- 18.55
+  3. REINFORCE_Original: -231.93 +/- 27.66
+  4. Actor_Critic: -276.00 +/- 28.93
+  5. Random: -837.47 +/- 298.46
+  6. DQN: -1130.27 +/- 205.43
+
+Night Time Scenario:
+  1. DQN: 1035.73 +/- 96.33
+  2. Random: -579.07 +/- 509.18
+  3. REINFORCE_Improved: -822.40 +/- 189.05
+  4. PPO: -859.87 +/- 167.21
+  5. Actor_Critic: -996.67 +/- 136.93
+  6. REINFORCE_Original: -997.33 +/- 214.05
+
+Normal Day Scenario:
+  1. PPO: -229.27 +/- 37.80
+  2. REINFORCE_Improved: -284.40 +/- 37.65
+  3. REINFORCE_Original: -315.60 +/- 37.41
+  4. Actor_Critic: -362.00 +/- 46.30
+  5. DQN: -681.47 +/- 262.13
+  6. Random: -1609.13 +/- 624.87
+
+4. DEPLOYMENT RECOMMENDATIONS
+----------------------------------------
+Recommended Deployment Portfolio:
+
+PRIMARY DEPLOYMENT: PPO
+  Performance: -153.64 +/- 17.04
+  Improvement: 81.7% over baseline
+  Reliability: 17.04 standard deviation
+  Efficiency: 18.2 average steps per episode
+
+SECONDARY OPTION: REINFORCE_Improved
+  Performance: -189.64 +/- 25.04
+  Improvement: 77.4% over baseline
+  Reliability: 25.04 standard deviation
+  Efficiency: 18.2 average steps per episode
+
+BACKUP SYSTEM: REINFORCE_Original
+  Performance: -241.96 +/- 30.38
+  Improvement: 71.2% over baseline
+  Reliability: 30.38 standard deviation
+  Efficiency: 25.6 average steps per episode
+
+5. TECHNICAL SUMMARY
+----------------------------------------
+Total Algorithms Evaluated: 6
+Episodes per Algorithm: 25
+Traffic Scenarios Tested: 5
+Best Overall Performance: -153.64
+Baseline (Random) Performance: -839.48
+Maximum Improvement Achieved: 81.7%
