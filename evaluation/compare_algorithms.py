@@ -122,186 +122,256 @@ class ComprehensiveEvaluator:
         return models
     
     def evaluate_single_algorithm(self, model, algorithm_name: str, n_episodes: int = 20) -> Dict:
-        """
-        Evaluate a single algorithm comprehensively
-        
-        Args:
-            model: Trained model
-            algorithm_name: Name of the algorithm
-            n_episodes: Number of episodes for evaluation
+            """
+            Evaluate a single algorithm comprehensively with debugging
             
-        Returns:
-            Evaluation results dictionary
-        """
-        print(f"Evaluating {algorithm_name}...")
-        
-        env = TrafficJunctionEnv(render_mode=None)
-        
-        # Metrics to track
-        episode_rewards = []
-        episode_lengths = []
-        vehicles_processed = []
-        total_waiting_times = []
-        queue_lengths_over_time = []
-        hidden_states_distribution = defaultdict(int)
-        emergency_response_times = []
-        action_distributions = defaultdict(int)
-        convergence_episodes = []
-        
-        # Traffic scenario performance
-        scenario_performance = {
-            'rush_hour': [],
-            'normal': [],
-            'night': []
-        }
-        
-        start_time = time.time()
-        
-        for episode in range(n_episodes):
-            # Reset environment
-            obs, info = env.reset()
-            
-            # Set different traffic scenarios
-            if episode < n_episodes // 3:
-                env.current_time = 8.0  # Rush hour
-                scenario = 'rush_hour'
-            elif episode < 2 * n_episodes // 3:
-                env.current_time = 14.0  # Normal hours
-                scenario = 'normal'
-            else:
-                env.current_time = 23.0  # Night time
-                scenario = 'night'
-            
-            episode_reward = 0
-            episode_length = 0
-            episode_queue_lengths = []
-            episode_actions = []
-            emergency_start = None
-            
-            max_steps = 500
-            for step in range(max_steps):
-                # Get action based on algorithm type
-                if algorithm_name == 'Random':
-                    action = env.action_space.sample()
-                elif algorithm_name in ['DQN', 'PPO']:
-                    action, _ = model.predict(obs, deterministic=True)
-                    # FIX: Convert numpy array to int
-                    if isinstance(action, np.ndarray):
-                        action = int(action.item())
-                    else:
-                        action = int(action)
-                elif algorithm_name == 'REINFORCE':
-                    result = model.get_action(obs, training=False)
-                    if len(result) == 2:
-                        action, _ = result
-                    else:
-                        action, _, _ = result
-                    # Ensure action is int
-                    action = int(action)
-                elif algorithm_name == 'Actor-Critic':
-                    result = model.get_action(obs, training=False)
-                    if len(result) == 2:
-                        action, _ = result
-                    else:
-                        action, _, _ = result
-                    # Ensure action is int
-                    action = int(action)
+            Args:
+                model: Trained model
+                algorithm_name: Name of the algorithm
+                n_episodes: Number of episodes for evaluation
                 
-                # Take action
-                obs, reward, terminated, truncated, info = env.step(action)
+            Returns:
+                Evaluation results dictionary
+            """
+            print(f"Evaluating {algorithm_name}...")
+            
+            # Set random seed for reproducibility
+            np.random.seed(42)
+            
+            env = TrafficJunctionEnv(render_mode=None)
+            
+            # Use same environment settings as training
+            # Don't manually override time scenarios - let models work with natural environment
+            
+            # Metrics to track
+            episode_rewards = []
+            episode_lengths = []
+            vehicles_processed = []
+            total_waiting_times = []
+            queue_lengths_over_time = []
+            hidden_states_distribution = defaultdict(int)
+            emergency_response_times = []
+            action_distributions = defaultdict(int)
+            convergence_episodes = []
+            
+            # Track detailed episode information
+            episode_details = []
+            
+            start_time = time.time()
+            
+            for episode in range(n_episodes):
+                # Reset environment normally without time manipulation
+                obs, info = env.reset()
                 
-                # Track metrics
-                episode_reward += reward
-                episode_length += 1
-                episode_queue_lengths.append(info['total_vehicles_waiting'])
-                episode_actions.append(action)
-                action_distributions[action] += 1  # Now action is guaranteed to be int
+                # Print initial state for first few episodes
+                if episode < 3:
+                    print(f"  Episode {episode}: Initial time={info.get('time_of_day', 'unknown')}, "
+                        f"State={info.get('hidden_state', 'unknown')}")
                 
-                # Track hidden states
-                hidden_states_distribution[info['hidden_state']] += 1
+                episode_reward = 0
+                episode_length = 0
+                episode_queue_lengths = []
+                episode_actions = []
+                emergency_start = None
                 
-                # Track emergency response
-                if info['emergency_active'] and emergency_start is None:
-                    emergency_start = step
-                elif not info['emergency_active'] and emergency_start is not None:
-                    emergency_response_times.append(step - emergency_start)
-                    emergency_start = None
+                # Use reasonable max_steps (match training)
+                max_steps = 500  
                 
-                if terminated or truncated:
-                    break
+                for step in range(max_steps):
+                    # Track action selection for first episode
+                    if episode == 0 and step < 5:
+                        print(f"    Step {step}: Getting action for {algorithm_name}...")
+                    
+                    # Get action based on algorithm type
+                    if algorithm_name == 'Random':
+                        action = env.action_space.sample()
+                    elif algorithm_name in ['DQN', 'PPO']:
+                        try:
+                            action, _ = model.predict(obs, deterministic=True)
+                            # Convert numpy array to int
+                            if isinstance(action, np.ndarray):
+                                action = int(action.item())
+                            else:
+                                action = int(action)
+                            
+                            # Print action for first episode
+                            if episode == 0 and step < 5:
+                                print(f"      {algorithm_name} selected action: {action}")
+                                
+                        except Exception as e:
+                            print(f"    ERROR in {algorithm_name} action selection: {e}")
+                            action = env.action_space.sample()  # Fallback to random
+                            
+                    elif algorithm_name == 'REINFORCE':
+                        try:
+                            result = model.get_action(obs, training=False)
+                            if len(result) == 2:
+                                action, _ = result
+                            else:
+                                action, _, _ = result
+                            action = int(action)
+                            
+                            if episode == 0 and step < 5:
+                                print(f"      {algorithm_name} selected action: {action}")
+                                
+                        except Exception as e:
+                            print(f"    ERROR in {algorithm_name} action selection: {e}")
+                            action = env.action_space.sample()
+                            
+                    elif algorithm_name == 'Actor-Critic':
+                        try:
+                            result = model.get_action(obs, training=False)
+                            if len(result) == 2:
+                                action, _ = result
+                            else:
+                                action, _, _ = result
+                            action = int(action)
+                            
+                            if episode == 0 and step < 5:
+                                print(f"      {algorithm_name} selected action: {action}")
+                                
+                        except Exception as e:
+                            print(f"    ERROR in {algorithm_name} action selection: {e}")
+                            action = env.action_space.sample()
+                    
+                    # Take action
+                    obs, reward, terminated, truncated, info = env.step(action)
+                    
+                    # Print step details for first episode
+                    if episode == 0 and step < 5:
+                        print(f"      Reward: {reward:.2f}, Terminated: {terminated}, "
+                            f"Truncated: {truncated}, Queue: {info.get('total_vehicles_waiting', 0)}")
+                    
+                    # Track metrics
+                    episode_reward += reward
+                    episode_length += 1
+                    episode_queue_lengths.append(info['total_vehicles_waiting'])
+                    episode_actions.append(action)
+                    action_distributions[action] += 1
+                    
+                    # Track hidden states
+                    hidden_states_distribution[info['hidden_state']] += 1
+                    
+                    # Track emergency response
+                    if info['emergency_active'] and emergency_start is None:
+                        emergency_start = step
+                    elif not info['emergency_active'] and emergency_start is not None:
+                        emergency_response_times.append(step - emergency_start)
+                        emergency_start = None
+                    
+                    if terminated or truncated:
+                        # Print termination reason
+                        if episode < 3:
+                            print(f"  Episode {episode} ended at step {step}: "
+                                f"Terminated={terminated}, Truncated={truncated}")
+                        break
+                
+                # Store episode results
+                episode_rewards.append(episode_reward)
+                episode_lengths.append(episode_length)
+                vehicles_processed.append(info['vehicles_processed'])
+                total_waiting_times.append(np.sum(episode_queue_lengths))
+                queue_lengths_over_time.extend(episode_queue_lengths)
+                
+                # Store episode details
+                episode_details.append({
+                    'episode': episode,
+                    'reward': episode_reward,
+                    'length': episode_length,
+                    'vehicles': info['vehicles_processed'],
+                    'final_queue': info['total_vehicles_waiting'],
+                    'terminated': terminated,
+                    'truncated': truncated
+                })
+                
+                # Print progress for every episode in first 5
+                if episode < 5:
+                    print(f"  Episode {episode}: Reward={episode_reward:.2f}, "
+                        f"Length={episode_length}, Vehicles={info['vehicles_processed']}")
+                
+                # Check for convergence (if reward is consistently above threshold)
+                if len(episode_rewards) >= 10:
+                    recent_avg = np.mean(episode_rewards[-10:])
+                    if recent_avg > 50 and len(convergence_episodes) == 0:
+                        convergence_episodes.append(episode)
             
-            # Store episode results
-            episode_rewards.append(episode_reward)
-            episode_lengths.append(episode_length)
-            vehicles_processed.append(info['vehicles_processed'])
-            total_waiting_times.append(np.sum(episode_queue_lengths))
-            queue_lengths_over_time.extend(episode_queue_lengths)
-            scenario_performance[scenario].append(episode_reward)
+            evaluation_time = time.time() - start_time
             
-            # Check for convergence (if reward is consistently above threshold)
-            if len(episode_rewards) >= 10:
-                recent_avg = np.mean(episode_rewards[-10:])
-                if recent_avg > 50 and len(convergence_episodes) == 0:  # Arbitrary threshold
-                    convergence_episodes.append(episode)
-        
-        evaluation_time = time.time() - start_time
-        
-        # Calculate comprehensive metrics
-        results = {
-            # Basic performance metrics
-            'mean_reward': np.mean(episode_rewards),
-            'std_reward': np.std(episode_rewards),
-            'min_reward': np.min(episode_rewards),
-            'max_reward': np.max(episode_rewards),
-            'median_reward': np.median(episode_rewards),
+            # Print summary statistics
+            print(f"    DEBUGGING SUMMARY for {algorithm_name}:")
+            print(f"      Episodes completed: {len(episode_rewards)}")
+            print(f"      Avg episode length: {np.mean(episode_lengths):.1f}")
+            print(f"      Avg vehicles processed: {np.mean(vehicles_processed):.1f}")
+            print(f"      Episodes terminated early: {sum(1 for d in episode_details if d['terminated'])}")
+            print(f"      Episodes truncated: {sum(1 for d in episode_details if d['truncated'])}")
             
-            # Episode characteristics
-            'mean_episode_length': np.mean(episode_lengths),
-            'std_episode_length': np.std(episode_lengths),
+            # Calculate comprehensive metrics
+            results = {
+                # Basic performance metrics
+                'mean_reward': np.mean(episode_rewards),
+                'std_reward': np.std(episode_rewards),
+                'min_reward': np.min(episode_rewards),
+                'max_reward': np.max(episode_rewards),
+                'median_reward': np.median(episode_rewards),
+                
+                # Episode characteristics
+                'mean_episode_length': np.mean(episode_lengths),
+                'std_episode_length': np.std(episode_lengths),
+                
+                # Traffic efficiency metrics
+                'mean_vehicles_processed': np.mean(vehicles_processed),
+                'total_vehicles_processed': np.sum(vehicles_processed),
+                'mean_waiting_time': np.mean(total_waiting_times),
+                'traffic_throughput': np.sum(vehicles_processed) / np.sum(episode_lengths) * 100 if np.sum(episode_lengths) > 0 else 0,
+                
+                # Queue management
+                'mean_queue_length': np.mean(queue_lengths_over_time) if queue_lengths_over_time else 0,
+                'max_queue_length': np.max(queue_lengths_over_time) if queue_lengths_over_time else 0,
+                'queue_stability': np.std(queue_lengths_over_time) if queue_lengths_over_time else 0,
+                
+                # Emergency response
+                'mean_emergency_response': np.mean(emergency_response_times) if emergency_response_times else float('inf'),
+                'emergency_episodes': len(emergency_response_times),
+                
+                # Action analysis
+                'action_distribution': dict(action_distributions),
+                'action_entropy': self._calculate_entropy(list(action_distributions.values())),
+                
+                # Hidden states analysis
+                'hidden_states_distribution': dict(hidden_states_distribution),
+                
+                # Remove scenario performance that was causing issues
+                # The manual time setting was interfering with model behavior
+                
+                # Convergence analysis
+                'convergence_episode': convergence_episodes[0] if convergence_episodes else n_episodes,
+                'evaluation_time': evaluation_time,
+                
+                # Raw data for plotting
+                'episode_rewards': episode_rewards,
+                'episode_lengths': episode_lengths,
+                'queue_lengths_over_time': queue_lengths_over_time[:1000],  # Limit for storage
+                
+                # Add episode details for analysis
+                'episode_details': episode_details[:10]  # First 10 episodes for debugging
+            }
             
-            # Traffic efficiency metrics
-            'mean_vehicles_processed': np.mean(vehicles_processed),
-            'total_vehicles_processed': np.sum(vehicles_processed),
-            'mean_waiting_time': np.mean(total_waiting_times),
-            'traffic_throughput': np.sum(vehicles_processed) / np.sum(episode_lengths) * 100,  # vehicles per 100 steps
+            env.close()
             
-            # Queue management
-            'mean_queue_length': np.mean(queue_lengths_over_time),
-            'max_queue_length': np.max(queue_lengths_over_time) if queue_lengths_over_time else 0,
-            'queue_stability': np.std(queue_lengths_over_time) if queue_lengths_over_time else 0,
+            print(f"{algorithm_name} evaluation completed")
+            print(f"   Mean Reward: {results['mean_reward']:.2f} ± {results['std_reward']:.2f}")
+            print(f"   Traffic Throughput: {results['traffic_throughput']:.2f} vehicles/100 steps")
+            print(f"   Mean Queue Length: {results['mean_queue_length']:.2f}")
             
-            # Emergency response
-            'mean_emergency_response': np.mean(emergency_response_times) if emergency_response_times else float('inf'),
-            'emergency_episodes': len(emergency_response_times),
+            # Add validation against training results
+            if algorithm_name == 'PPO' and results['mean_reward'] < -200:
+                print(f"   WARNING: {algorithm_name} performance ({results['mean_reward']:.2f}) "
+                    f"much worse than training (-158.25). Check model loading!")
+            elif algorithm_name == 'DQN' and results['mean_reward'] > -500:
+                print(f"   WARNING: {algorithm_name} performance ({results['mean_reward']:.2f}) "
+                    f"much better than training (-1371.20). Check model loading!")
             
-            # Action analysis
-            'action_distribution': dict(action_distributions),
-            'action_entropy': self._calculate_entropy(list(action_distributions.values())),
-            
-            # Hidden states analysis
-            'hidden_states_distribution': dict(hidden_states_distribution),
-            
-            # Scenario performance
-            'scenario_performance': {k: {'mean': np.mean(v), 'std': np.std(v)} for k, v in scenario_performance.items()},
-            
-            # Convergence analysis
-            'convergence_episode': convergence_episodes[0] if convergence_episodes else n_episodes,
-            'evaluation_time': evaluation_time,
-            
-            # Raw data for plotting
-            'episode_rewards': episode_rewards,
-            'episode_lengths': episode_lengths,
-            'queue_lengths_over_time': queue_lengths_over_time[:1000]  # Limit for storage
-        }
-        
-        env.close()
-        
-        print(f"{algorithm_name} evaluation completed")
-        print(f"   Mean Reward: {results['mean_reward']:.2f} ± {results['std_reward']:.2f}")
-        print(f"   Traffic Throughput: {results['traffic_throughput']:.2f} vehicles/100 steps")
-        print(f"   Mean Queue Length: {results['mean_queue_length']:.2f}")
-        
-        return results
+            return results
     
     def _calculate_entropy(self, values: List[int]) -> float:
         """Calculate Shannon entropy of action distribution"""
