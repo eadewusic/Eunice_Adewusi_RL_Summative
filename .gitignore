@@ -1,4 +1,2 @@
 # Virtual environment
 .venv/
-fix.py
-actor_critic_tuning_recovery.py

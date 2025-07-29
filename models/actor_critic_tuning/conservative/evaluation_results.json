@@ -1,0 +1,25 @@
+{
+  "algorithm": "ActorCritic_CONSERVATIVE",
+  "config_name": "conservative",
+  "mean_reward": -188.3,
+  "std_reward": 22.729056293651965,
+  "best_avg_reward": -187.89,
+  "hyperparameters": {
+    "actor_lr": 0.0005,
+    "critic_lr": 0.001,
+    "gamma": 0.99,
+    "entropy_coef": 0.005,
+    "value_coef": 0.5,
+    "max_grad_norm": 1.0,
+    "seed": 42,
+    "device": "cpu"
+  },
+  "training_stats": {
+    "training_time": "0:01:30.298562",
+    "num_episodes": 1000,
+    "final_model_path": "models\\actor_critic_tuning\\conservative\\ac_conservative_final.pth",
+    "episode_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_step_metrics.csv"
+  },
+  "timestamp": "2025-07-30T00:19:01.740917"
+}

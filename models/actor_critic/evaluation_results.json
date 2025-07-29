@@ -1,7 +1,9 @@
 {
-  "algorithm": "Actor-Critic",
-  "mean_reward": -254.25,
-  "std_reward": 25.113492389550284,
+  "algorithm": "ActorCritic_BASELINE",
+  "config_name": "baseline",
+  "mean_reward": -9238.35,
+  "std_reward": 113.48227835217267,
+  "best_avg_reward": -2569.95,
   "hyperparameters": {
     "actor_lr": 0.001,
     "critic_lr": 0.002,
@@ -9,16 +11,15 @@
     "entropy_coef": 0.01,
     "value_coef": 0.5,
     "max_grad_norm": 1.0,
+    "seed": 42,
     "device": "cpu"
   },
   "training_stats": {
-    "training_time": "0:02:56.569102",
-    "num_episodes": 1200,
-    "final_avg_reward": -265.5,
-    "best_avg_reward": -258.05,
-    "final_model_path": "models/actor_critic/ac_traffic_final.pth",
-    "config_path": "models/actor_critic/ac_config.json",
+    "training_time": "0:21:04.657791",
+    "num_episodes": 1000,
+    "final_model_path": "models\\actor_critic\\ac_baseline_final.pth",
     "episode_metrics_csv": "results/training_logs/Actor-Critic_episode_metrics.csv",
     "step_metrics_csv": "results/training_logs/Actor-Critic_step_metrics.csv"
-  }
+  },
+  "timestamp": "2025-07-30T00:17:31.068087"
 }

@@ -1,0 +1,241 @@
+{
+  "comparison_type": "Complete Actor-Critic Training with Hyperparameter Tuning (FIXED)",
+  "training_parameters": {
+    "num_episodes": 1000,
+    "eval_frequency": 100,
+    "max_steps_per_episode": 500,
+    "update_frequency": 10,
+    "final_eval_episodes": 20
+  },
+  "timestamp": "2025-07-30T00:45:04.631371",
+  "total_configurations": 4,
+  "baseline_result": {
+    "algorithm": "ActorCritic_BASELINE",
+    "config_name": "baseline",
+    "mean_reward": -9238.35,
+    "std_reward": 113.48227835217267,
+    "best_avg_reward": -2569.95,
+    "hyperparameters": {
+      "actor_lr": 0.001,
+      "critic_lr": 0.002,
+      "gamma": 0.99,
+      "entropy_coef": 0.01,
+      "value_coef": 0.5,
+      "max_grad_norm": 1.0,
+      "seed": 42,
+      "device": "cpu"
+    },
+    "training_stats": {
+      "training_time": "0:21:04.657791",
+      "num_episodes": 1000,
+      "final_model_path": "models\\actor_critic\\ac_baseline_final.pth",
+      "episode_metrics_csv": "results/training_logs/Actor-Critic_episode_metrics.csv",
+      "step_metrics_csv": "results/training_logs/Actor-Critic_step_metrics.csv"
+    },
+    "timestamp": "2025-07-30T00:17:31.068087"
+  },
+  "hyperparameter_results": [
+    {
+      "algorithm": "ActorCritic_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -188.3,
+      "std_reward": 22.729056293651965,
+      "best_avg_reward": -187.89,
+      "hyperparameters": {
+        "actor_lr": 0.0005,
+        "critic_lr": 0.001,
+        "gamma": 0.99,
+        "entropy_coef": 0.005,
+        "value_coef": 0.5,
+        "max_grad_norm": 1.0,
+        "seed": 42,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:01:30.298562",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\conservative\\ac_conservative_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:19:01.740917"
+    },
+    {
+      "algorithm": "ActorCritic_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -14970.75,
+      "std_reward": 8.104782538723663,
+      "best_avg_reward": -5828.76,
+      "hyperparameters": {
+        "actor_lr": 0.002,
+        "critic_lr": 0.003,
+        "gamma": 0.95,
+        "entropy_coef": 0.02,
+        "value_coef": 0.3,
+        "max_grad_norm": 1.0,
+        "seed": 456,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:23:28.345169",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\aggressive\\ac_aggressive_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:42:56.338117"
+    },
+    {
+      "algorithm": "ActorCritic_BALANCED",
+      "config_name": "balanced",
+      "mean_reward": -182.7,
+      "std_reward": 17.830030846860588,
+      "best_avg_reward": -190.44,
+      "hyperparameters": {
+        "actor_lr": 0.0015,
+        "critic_lr": 0.0025,
+        "gamma": 0.98,
+        "entropy_coef": 0.015,
+        "value_coef": 0.4,
+        "max_grad_norm": 1.0,
+        "seed": 789,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:02:07.813281",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\balanced\\ac_balanced_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_BALANCED_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_BALANCED_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:45:04.626372"
+    }
+  ],
+  "all_results_ranked": [
+    {
+      "algorithm": "ActorCritic_BALANCED",
+      "config_name": "balanced",
+      "mean_reward": -182.7,
+      "std_reward": 17.830030846860588,
+      "best_avg_reward": -190.44,
+      "hyperparameters": {
+        "actor_lr": 0.0015,
+        "critic_lr": 0.0025,
+        "gamma": 0.98,
+        "entropy_coef": 0.015,
+        "value_coef": 0.4,
+        "max_grad_norm": 1.0,
+        "seed": 789,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:02:07.813281",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\balanced\\ac_balanced_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_BALANCED_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_BALANCED_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:45:04.626372"
+    },
+    {
+      "algorithm": "ActorCritic_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -188.3,
+      "std_reward": 22.729056293651965,
+      "best_avg_reward": -187.89,
+      "hyperparameters": {
+        "actor_lr": 0.0005,
+        "critic_lr": 0.001,
+        "gamma": 0.99,
+        "entropy_coef": 0.005,
+        "value_coef": 0.5,
+        "max_grad_norm": 1.0,
+        "seed": 42,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:01:30.298562",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\conservative\\ac_conservative_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:19:01.740917"
+    },
+    {
+      "algorithm": "ActorCritic_BASELINE",
+      "config_name": "baseline",
+      "mean_reward": -9238.35,
+      "std_reward": 113.48227835217267,
+      "best_avg_reward": -2569.95,
+      "hyperparameters": {
+        "actor_lr": 0.001,
+        "critic_lr": 0.002,
+        "gamma": 0.99,
+        "entropy_coef": 0.01,
+        "value_coef": 0.5,
+        "max_grad_norm": 1.0,
+        "seed": 42,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:21:04.657791",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic\\ac_baseline_final.pth",
+        "episode_metrics_csv": "results/training_logs/Actor-Critic_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/Actor-Critic_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:17:31.068087"
+    },
+    {
+      "algorithm": "ActorCritic_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -14970.75,
+      "std_reward": 8.104782538723663,
+      "best_avg_reward": -5828.76,
+      "hyperparameters": {
+        "actor_lr": 0.002,
+        "critic_lr": 0.003,
+        "gamma": 0.95,
+        "entropy_coef": 0.02,
+        "value_coef": 0.3,
+        "max_grad_norm": 1.0,
+        "seed": 456,
+        "device": "cpu"
+      },
+      "training_stats": {
+        "training_time": "0:23:28.345169",
+        "num_episodes": 1000,
+        "final_model_path": "models\\actor_critic_tuning\\aggressive\\ac_aggressive_final.pth",
+        "episode_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-30T00:42:56.338117"
+    }
+  ],
+  "best_configuration": {
+    "algorithm": "ActorCritic_BALANCED",
+    "config_name": "balanced",
+    "mean_reward": -182.7,
+    "std_reward": 17.830030846860588,
+    "best_avg_reward": -190.44,
+    "hyperparameters": {
+      "actor_lr": 0.0015,
+      "critic_lr": 0.0025,
+      "gamma": 0.98,
+      "entropy_coef": 0.015,
+      "value_coef": 0.4,
+      "max_grad_norm": 1.0,
+      "seed": 789,
+      "device": "cpu"
+    },
+    "training_stats": {
+      "training_time": "0:02:07.813281",
+      "num_episodes": 1000,
+      "final_model_path": "models\\actor_critic_tuning\\balanced\\ac_balanced_final.pth",
+      "episode_metrics_csv": "results/training_logs/ActorCritic_BALANCED_episode_metrics.csv",
+      "step_metrics_csv": "results/training_logs/ActorCritic_BALANCED_step_metrics.csv"
+    },
+    "timestamp": "2025-07-30T00:45:04.626372"
+  }
+}

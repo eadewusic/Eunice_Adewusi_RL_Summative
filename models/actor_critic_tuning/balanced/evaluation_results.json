@@ -1,0 +1,25 @@
+{
+  "algorithm": "ActorCritic_BALANCED",
+  "config_name": "balanced",
+  "mean_reward": -182.7,
+  "std_reward": 17.830030846860588,
+  "best_avg_reward": -190.44,
+  "hyperparameters": {
+    "actor_lr": 0.0015,
+    "critic_lr": 0.0025,
+    "gamma": 0.98,
+    "entropy_coef": 0.015,
+    "value_coef": 0.4,
+    "max_grad_norm": 1.0,
+    "seed": 789,
+    "device": "cpu"
+  },
+  "training_stats": {
+    "training_time": "0:02:07.813281",
+    "num_episodes": 1000,
+    "final_model_path": "models\\actor_critic_tuning\\balanced\\ac_balanced_final.pth",
+    "episode_metrics_csv": "results/training_logs/ActorCritic_BALANCED_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/ActorCritic_BALANCED_step_metrics.csv"
+  },
+  "timestamp": "2025-07-30T00:45:04.626372"
+}

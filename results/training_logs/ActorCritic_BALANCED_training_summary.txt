@@ -1,0 +1,9 @@
+Training Summary - ActorCritic_BALANCED
+==================================================
+
+total_episodes: 1000
+total_steps: 0
+mean_reward_100: -196.1
+training_time_hours: 0.03487190590964423
+episode_log_path: results/training_logs/ActorCritic_BALANCED_episode_metrics.csv
+step_log_path: results/training_logs/ActorCritic_BALANCED_step_metrics.csv

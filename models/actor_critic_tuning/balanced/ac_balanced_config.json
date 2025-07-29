@@ -1,0 +1,10 @@
+{
+  "actor_lr": 0.0015,
+  "critic_lr": 0.0025,
+  "gamma": 0.98,
+  "entropy_coef": 0.015,
+  "value_coef": 0.4,
+  "max_grad_norm": 1.0,
+  "seed": 789,
+  "device": "cpu"
+}

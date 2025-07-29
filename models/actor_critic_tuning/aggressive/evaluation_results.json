@@ -1,0 +1,25 @@
+{
+  "algorithm": "ActorCritic_AGGRESSIVE",
+  "config_name": "aggressive",
+  "mean_reward": -14970.75,
+  "std_reward": 8.104782538723663,
+  "best_avg_reward": -5828.76,
+  "hyperparameters": {
+    "actor_lr": 0.002,
+    "critic_lr": 0.003,
+    "gamma": 0.95,
+    "entropy_coef": 0.02,
+    "value_coef": 0.3,
+    "max_grad_norm": 1.0,
+    "seed": 456,
+    "device": "cpu"
+  },
+  "training_stats": {
+    "training_time": "0:23:28.345169",
+    "num_episodes": 1000,
+    "final_model_path": "models\\actor_critic_tuning\\aggressive\\ac_aggressive_final.pth",
+    "episode_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/ActorCritic_AGGRESSIVE_step_metrics.csv"
+  },
+  "timestamp": "2025-07-30T00:42:56.338117"
+}
