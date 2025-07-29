@@ -509,7 +509,6 @@ if __name__ == "__main__":
     import torch
     
     print("Rwanda Traffic Flow Optimization - DQN Training")
-    print("Assignment: Mission-Based Reinforcement Learning")
     print("Algorithm: Deep Q-Network (Value-Based Method)")
     print()
     
