@@ -1,0 +1,28 @@
+{
+  "algorithm": "PPO_HIGH_ENTROPY",
+  "config_name": "high_entropy",
+  "mean_reward": -154.0,
+  "std_reward": 22.658331800907145,
+  "hyperparameters": {
+    "learning_rate": 0.0003,
+    "n_steps": 2048,
+    "batch_size": 64,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.1,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "seed": 789
+  },
+  "training_stats": {
+    "training_time": "0:06:53.777205",
+    "total_timesteps": 200000,
+    "final_model_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_final.zip",
+    "config_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_config.json",
+    "episode_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_step_metrics.csv"
+  },
+  "timestamp": "2025-07-29T23:16:04.257119"
+}

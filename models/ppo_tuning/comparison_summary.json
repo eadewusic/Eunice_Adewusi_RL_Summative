@@ -1,0 +1,219 @@
+{
+  "comparison_type": "Comparison - Same Training Conditions",
+  "training_parameters": {
+    "total_timesteps": 200000,
+    "eval_freq": 10000,
+    "n_eval_episodes": 10,
+    "final_eval_episodes": 20,
+    "vectorized_envs": 4
+  },
+  "timestamp": "2025-07-29T23:16:05.023873",
+  "total_configurations": 3,
+  "successful_configurations": 3,
+  "main_training_reference": {
+    "config_name": "main_training",
+    "mean_reward": -158.25,
+    "std_reward": 20.41292482717751,
+    "hyperparameters": {
+      "learning_rate": 0.0003,
+      "n_steps": 2048,
+      "batch_size": 64,
+      "n_epochs": 10,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "clip_range": 0.2,
+      "ent_coef": 0.0,
+      "vf_coef": 0.5,
+      "max_grad_norm": 0.5
+    }
+  },
+  "hyperparameter_results": [
+    {
+      "algorithm": "PPO_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -153.6,
+      "std_reward": 18.312290954438225,
+      "hyperparameters": {
+        "learning_rate": 0.0001,
+        "n_steps": 1024,
+        "batch_size": 32,
+        "n_epochs": 4,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.1,
+        "ent_coef": 0.01,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:06:13.210137",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\conservative\\ppo_conservative_final.zip",
+        "config_path": "models\\ppo_tuning\\conservative\\ppo_conservative_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:01:20.096993"
+    },
+    {
+      "algorithm": "PPO_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -151.85,
+      "std_reward": 22.4238154648133,
+      "hyperparameters": {
+        "learning_rate": 0.001,
+        "n_steps": 4096,
+        "batch_size": 128,
+        "n_epochs": 20,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.3,
+        "ent_coef": 0.001,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:07:31.184860",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\aggressive\\ppo_aggressive_final.zip",
+        "config_path": "models\\ppo_tuning\\aggressive\\ppo_aggressive_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:09:02.056275"
+    },
+    {
+      "algorithm": "PPO_HIGH_ENTROPY",
+      "config_name": "high_entropy",
+      "mean_reward": -154.0,
+      "std_reward": 22.658331800907145,
+      "hyperparameters": {
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "ent_coef": 0.1,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 789
+      },
+      "training_stats": {
+        "training_time": "0:06:53.777205",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_final.zip",
+        "config_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:16:04.257119"
+    }
+  ],
+  "all_results_ranked": [
+    {
+      "algorithm": "PPO_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -151.85,
+      "std_reward": 22.4238154648133,
+      "hyperparameters": {
+        "learning_rate": 0.001,
+        "n_steps": 4096,
+        "batch_size": 128,
+        "n_epochs": 20,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.3,
+        "ent_coef": 0.001,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:07:31.184860",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\aggressive\\ppo_aggressive_final.zip",
+        "config_path": "models\\ppo_tuning\\aggressive\\ppo_aggressive_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:09:02.056275"
+    },
+    {
+      "algorithm": "PPO_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -153.6,
+      "std_reward": 18.312290954438225,
+      "hyperparameters": {
+        "learning_rate": 0.0001,
+        "n_steps": 1024,
+        "batch_size": 32,
+        "n_epochs": 4,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.1,
+        "ent_coef": 0.01,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:06:13.210137",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\conservative\\ppo_conservative_final.zip",
+        "config_path": "models\\ppo_tuning\\conservative\\ppo_conservative_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:01:20.096993"
+    },
+    {
+      "algorithm": "PPO_HIGH_ENTROPY",
+      "config_name": "high_entropy",
+      "mean_reward": -154.0,
+      "std_reward": 22.658331800907145,
+      "hyperparameters": {
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "ent_coef": 0.1,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5,
+        "seed": 789
+      },
+      "training_stats": {
+        "training_time": "0:06:53.777205",
+        "total_timesteps": 200000,
+        "final_model_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_final.zip",
+        "config_path": "models\\ppo_tuning\\high_entropy\\ppo_high_entropy_config.json",
+        "episode_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/PPO_HIGH_ENTROPY_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T23:16:04.257119"
+    },
+    {
+      "config_name": "main_training",
+      "mean_reward": -158.25,
+      "std_reward": 20.41292482717751,
+      "hyperparameters": {
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "ent_coef": 0.0,
+        "vf_coef": 0.5,
+        "max_grad_norm": 0.5
+      }
+    }
+  ]
+}
