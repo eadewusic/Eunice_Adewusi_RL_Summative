@@ -1,0 +1,132 @@
+{
+  "comparison_type": "Comparison - Same Training Conditions",
+  "training_parameters": {
+    "num_episodes": 1000,
+    "eval_frequency": 50,
+    "max_steps_per_episode": 500,
+    "early_stopping_patience": 5,
+    "final_eval_episodes": 20,
+    "learning_rate_scheduling": true
+  },
+  "timestamp": "2025-07-29T17:37:08.238089",
+  "total_configurations": 3,
+  "successful_configurations": 3,
+  "main_training_reference": {
+    "config_name": "main_training",
+    "mean_reward": -188.95,
+    "std_reward": 25.28532182907704,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "gamma": 0.99,
+      "use_baseline": true,
+      "network_architecture": "128-128-64",
+      "device": "cpu",
+      "patience": 5
+    }
+  },
+  "hyperparameter_results": [
+    {
+      "algorithm": "REINFORCE_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -191.1,
+      "std_reward": 23.97477841399165,
+      "best_training_reward": -250.32,
+      "early_stop": false,
+      "hyperparameters": {
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "use_baseline": true,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:02:20.764736",
+        "num_episodes": 1000,
+        "final_model_path": "models\\reinforce_tuning\\conservative\\reinforce_conservative_final.pth",
+        "episode_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T17:33:43.262035"
+    },
+    {
+      "algorithm": "REINFORCE_MODERATE",
+      "config_name": "moderate",
+      "mean_reward": -242.8,
+      "std_reward": 27.870414421030773,
+      "best_training_reward": -296.78,
+      "early_stop": true,
+      "hyperparameters": {
+        "learning_rate": 0.0008,
+        "gamma": 0.99,
+        "use_baseline": true,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:01:33.205098",
+        "num_episodes": 750,
+        "final_model_path": "models\\reinforce_tuning\\moderate\\reinforce_moderate_final.pth",
+        "episode_metrics_csv": "results/training_logs/REINFORCE_MODERATE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/REINFORCE_MODERATE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T17:37:08.191428"
+    }
+  ],
+  "all_results_ranked": [
+    {
+      "config_name": "main_training",
+      "mean_reward": -188.95,
+      "std_reward": 25.28532182907704,
+      "hyperparameters": {
+        "learning_rate": 0.0005,
+        "gamma": 0.99,
+        "use_baseline": true,
+        "network_architecture": "128-128-64",
+        "device": "cpu",
+        "patience": 5
+      }
+    },
+    {
+      "algorithm": "REINFORCE_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -191.1,
+      "std_reward": 23.97477841399165,
+      "best_training_reward": -250.32,
+      "early_stop": false,
+      "hyperparameters": {
+        "learning_rate": 0.0003,
+        "gamma": 0.99,
+        "use_baseline": true,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:02:20.764736",
+        "num_episodes": 1000,
+        "final_model_path": "models\\reinforce_tuning\\conservative\\reinforce_conservative_final.pth",
+        "episode_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T17:33:43.262035"
+    },
+    {
+      "algorithm": "REINFORCE_MODERATE",
+      "config_name": "moderate",
+      "mean_reward": -242.8,
+      "std_reward": 27.870414421030773,
+      "best_training_reward": -296.78,
+      "early_stop": true,
+      "hyperparameters": {
+        "learning_rate": 0.0008,
+        "gamma": 0.99,
+        "use_baseline": true,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:01:33.205098",
+        "num_episodes": 750,
+        "final_model_path": "models\\reinforce_tuning\\moderate\\reinforce_moderate_final.pth",
+        "episode_metrics_csv": "results/training_logs/REINFORCE_MODERATE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/REINFORCE_MODERATE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T17:37:08.191428"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+global_step,episode,step_in_episode,reward,cumulative_reward,action_taken,queue_north,queue_south,queue_east,queue_west,total_queue,vehicles_processed,light_state,hidden_state

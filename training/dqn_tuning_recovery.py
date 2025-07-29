@@ -1,6 +1,6 @@
 """
 Complete DQN Hyperparameter Recovery Script
-Recovers the 3 missing hyperparameter configurations identified by diagnosis
+Recovers the 2 missing hyperparameter configurations identified by diagnosis
 
 Matches main training parameters for proper comparison:
 - 100,000 timesteps (same as main)

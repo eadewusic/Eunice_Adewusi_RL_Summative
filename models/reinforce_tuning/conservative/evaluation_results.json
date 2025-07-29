@@ -1,0 +1,22 @@
+{
+  "algorithm": "REINFORCE_CONSERVATIVE",
+  "config_name": "conservative",
+  "mean_reward": -191.1,
+  "std_reward": 23.97477841399165,
+  "best_training_reward": -250.32,
+  "early_stop": false,
+  "hyperparameters": {
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "use_baseline": true,
+    "seed": 42
+  },
+  "training_stats": {
+    "training_time": "0:02:20.764736",
+    "num_episodes": 1000,
+    "final_model_path": "models\\reinforce_tuning\\conservative\\reinforce_conservative_final.pth",
+    "episode_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/REINFORCE_CONSERVATIVE_step_metrics.csv"
+  },
+  "timestamp": "2025-07-29T17:33:43.262035"
+}

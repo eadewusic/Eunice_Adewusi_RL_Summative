@@ -1,0 +1,6 @@
+{
+  "learning_rate": 0.0003,
+  "gamma": 0.99,
+  "use_baseline": true,
+  "seed": 42
+}

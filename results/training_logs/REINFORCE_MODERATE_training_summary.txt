@@ -1,0 +1,9 @@
+Training Summary - REINFORCE_MODERATE
+==================================================
+
+total_episodes: 750
+total_steps: 0
+mean_reward_100: -270.55
+training_time_hours: 0.02531385468112098
+episode_log_path: results/training_logs/REINFORCE_MODERATE_episode_metrics.csv
+step_log_path: results/training_logs/REINFORCE_MODERATE_step_metrics.csv

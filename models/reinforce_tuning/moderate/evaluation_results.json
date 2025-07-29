@@ -1,0 +1,22 @@
+{
+  "algorithm": "REINFORCE_MODERATE",
+  "config_name": "moderate",
+  "mean_reward": -242.8,
+  "std_reward": 27.870414421030773,
+  "best_training_reward": -296.78,
+  "early_stop": true,
+  "hyperparameters": {
+    "learning_rate": 0.0008,
+    "gamma": 0.99,
+    "use_baseline": true,
+    "seed": 456
+  },
+  "training_stats": {
+    "training_time": "0:01:33.205098",
+    "num_episodes": 750,
+    "final_model_path": "models\\reinforce_tuning\\moderate\\reinforce_moderate_final.pth",
+    "episode_metrics_csv": "results/training_logs/REINFORCE_MODERATE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/REINFORCE_MODERATE_step_metrics.csv"
+  },
+  "timestamp": "2025-07-29T17:37:08.191428"
+}

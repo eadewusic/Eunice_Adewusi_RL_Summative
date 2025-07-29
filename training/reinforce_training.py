@@ -655,14 +655,7 @@ def hyperparameter_tuning_experiment():
             'gamma': 0.99,
             'use_baseline': True
         },
-        # Configuration 2: Standard (balanced)
-        {
-            'name': 'standard',
-            'learning_rate': 0.0005,
-            'gamma': 0.99,
-            'use_baseline': True
-        },
-        # Configuration 3: Moderate (slightly faster)
+        # Configuration 2: Moderate (slightly faster)
         {
             'name': 'moderate',
             'learning_rate': 0.0008,
