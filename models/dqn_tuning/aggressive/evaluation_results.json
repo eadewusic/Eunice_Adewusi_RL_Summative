@@ -1,0 +1,23 @@
+{
+  "algorithm": "DQN_AGGRESSIVE",
+  "config_name": "aggressive",
+  "mean_reward": -778.6,
+  "std_reward": 458.26721462483,
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "batch_size": 128,
+    "gamma": 0.95,
+    "exploration_initial_eps": 1.0,
+    "exploration_final_eps": 0.02,
+    "seed": 456
+  },
+  "training_stats": {
+    "training_time": "0:06:17.714370",
+    "total_timesteps": 100000,
+    "final_model_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_final.zip",
+    "config_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_config.json",
+    "episode_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_episode_metrics.csv",
+    "step_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_step_metrics.csv"
+  },
+  "timestamp": "2025-07-29T14:02:01.208855"
+}

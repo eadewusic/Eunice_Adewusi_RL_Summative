@@ -1,0 +1,136 @@
+{
+  "comparison_type": "Comparison - Same Training Conditions",
+  "training_parameters": {
+    "total_timesteps": 100000,
+    "eval_freq": 5000,
+    "n_eval_episodes": 10,
+    "final_eval_episodes": 20,
+    "buffer_size": 50000,
+    "learning_starts": 1000,
+    "target_update_interval": 1000,
+    "exploration_fraction": 0.3
+  },
+  "timestamp": "2025-07-29T14:02:01.211854",
+  "total_configurations": 2,
+  "successful_configurations": 2,
+  "main_training_reference": {
+    "config_name": "main_training",
+    "mean_reward": -1371.2,
+    "std_reward": 644.8,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "batch_size": 64,
+      "gamma": 0.99,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05
+    }
+  },
+  "hyperparameter_results": [
+    {
+      "algorithm": "DQN_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -7312.85,
+      "std_reward": 197.5766370297865,
+      "hyperparameters": {
+        "learning_rate": 0.0001,
+        "batch_size": 32,
+        "gamma": 0.99,
+        "exploration_initial_eps": 0.8,
+        "exploration_final_eps": 0.1,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:05:28.072973",
+        "total_timesteps": 100000,
+        "final_model_path": "models\\dqn_tuning\\conservative\\dqn_conservative_final.zip",
+        "config_path": "models\\dqn_tuning\\conservative\\dqn_conservative_config.json",
+        "episode_metrics_csv": "results/training_logs/DQN_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/DQN_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T13:55:42.010536"
+    },
+    {
+      "algorithm": "DQN_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -778.6,
+      "std_reward": 458.26721462483,
+      "hyperparameters": {
+        "learning_rate": 0.001,
+        "batch_size": 128,
+        "gamma": 0.95,
+        "exploration_initial_eps": 1.0,
+        "exploration_final_eps": 0.02,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:06:17.714370",
+        "total_timesteps": 100000,
+        "final_model_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_final.zip",
+        "config_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_config.json",
+        "episode_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T14:02:01.208855"
+    }
+  ],
+  "all_results_ranked": [
+    {
+      "algorithm": "DQN_AGGRESSIVE",
+      "config_name": "aggressive",
+      "mean_reward": -778.6,
+      "std_reward": 458.26721462483,
+      "hyperparameters": {
+        "learning_rate": 0.001,
+        "batch_size": 128,
+        "gamma": 0.95,
+        "exploration_initial_eps": 1.0,
+        "exploration_final_eps": 0.02,
+        "seed": 456
+      },
+      "training_stats": {
+        "training_time": "0:06:17.714370",
+        "total_timesteps": 100000,
+        "final_model_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_final.zip",
+        "config_path": "models\\dqn_tuning\\aggressive\\dqn_aggressive_config.json",
+        "episode_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/DQN_AGGRESSIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T14:02:01.208855"
+    },
+    {
+      "config_name": "main_training",
+      "mean_reward": -1371.2,
+      "std_reward": 644.8,
+      "hyperparameters": {
+        "learning_rate": 0.0005,
+        "batch_size": 64,
+        "gamma": 0.99,
+        "exploration_initial_eps": 1.0,
+        "exploration_final_eps": 0.05
+      }
+    },
+    {
+      "algorithm": "DQN_CONSERVATIVE",
+      "config_name": "conservative",
+      "mean_reward": -7312.85,
+      "std_reward": 197.5766370297865,
+      "hyperparameters": {
+        "learning_rate": 0.0001,
+        "batch_size": 32,
+        "gamma": 0.99,
+        "exploration_initial_eps": 0.8,
+        "exploration_final_eps": 0.1,
+        "seed": 42
+      },
+      "training_stats": {
+        "training_time": "0:05:28.072973",
+        "total_timesteps": 100000,
+        "final_model_path": "models\\dqn_tuning\\conservative\\dqn_conservative_final.zip",
+        "config_path": "models\\dqn_tuning\\conservative\\dqn_conservative_config.json",
+        "episode_metrics_csv": "results/training_logs/DQN_CONSERVATIVE_episode_metrics.csv",
+        "step_metrics_csv": "results/training_logs/DQN_CONSERVATIVE_step_metrics.csv"
+      },
+      "timestamp": "2025-07-29T13:55:42.010536"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "gamma": 0.95,
+  "exploration_initial_eps": 1.0,
+  "exploration_final_eps": 0.02,
+  "seed": 456
+}
