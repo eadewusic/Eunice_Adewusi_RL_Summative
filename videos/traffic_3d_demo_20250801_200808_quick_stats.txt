@@ -1,0 +1,23 @@
+RWANDA TRAFFIC RL AGENT - QUICK STATS
+======================================
+
+SESSION: traffic_3d_demo_20250801_200808
+TIMESTAMP: 2025-08-01 20:10:00
+
+PERFORMANCE SUMMARY:
+- Average Reward: -152.00
+- Performance Rating: GOOD
+- Best Episode: 1 (-133.00)
+- Episodes: [-133.0, -144.0, -179.0]
+- Video Duration: 3.0s
+- Total Frames: 61
+
+MODEL INFO:
+- Type: PPO
+- Loaded: Yes
+- Path: models/ppo_tuning/aggressive/ppo_aggressive_final.zip
+
+TECHNICAL:
+- Resolution: 1280x720
+- FPS: 20
+- Engine: PyBullet 3D

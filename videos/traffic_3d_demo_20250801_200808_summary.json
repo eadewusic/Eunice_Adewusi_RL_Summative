@@ -1,0 +1,1069 @@
+{
+  "session_info": {
+    "session_name": "traffic_3d_demo_20250801_200808",
+    "timestamp": "2025-08-01T20:08:08.604893",
+    "model_path": "models/ppo_tuning/aggressive/ppo_aggressive_final.zip",
+    "video_settings": {
+      "width": 1280,
+      "height": 720,
+      "fps": 20
+    }
+  },
+  "episodes": [
+    {
+      "episode_number": 1,
+      "steps": [
+        {
+          "step": 0,
+          "action": 0,
+          "reward": 2.0,
+          "cumulative_reward": 2.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 35,
+          "queue_lengths": {
+            "north": 1,
+            "south": 1,
+            "east": 3,
+            "west": 1
+          },
+          "total_waiting": 6,
+          "vehicles_processed": 3
+        },
+        {
+          "step": 1,
+          "action": 3,
+          "reward": 5.0,
+          "cumulative_reward": 7.0,
+          "light_state": "EAST_WEST_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 3,
+            "south": 3,
+            "east": 1,
+            "west": 1
+          },
+          "total_waiting": 8,
+          "vehicles_processed": 7
+        },
+        {
+          "step": 2,
+          "action": 2,
+          "reward": 5.0,
+          "cumulative_reward": 12.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 1,
+            "south": 3,
+            "east": 1,
+            "west": 3
+          },
+          "total_waiting": 8,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 3,
+          "action": 3,
+          "reward": -8.0,
+          "cumulative_reward": 4.0,
+          "light_state": "EAST_WEST_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 3,
+            "south": 5,
+            "east": 1,
+            "west": 3
+          },
+          "total_waiting": 12,
+          "vehicles_processed": 14
+        },
+        {
+          "step": 4,
+          "action": 2,
+          "reward": 0.0,
+          "cumulative_reward": 4.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 3,
+            "south": 5,
+            "east": 2,
+            "west": 4
+          },
+          "total_waiting": 14,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 5,
+          "action": 5,
+          "reward": -11.0,
+          "cumulative_reward": -7.0,
+          "light_state": "ALL_RED",
+          "light_timer": 0,
+          "queue_lengths": {
+            "north": 5,
+            "south": 6,
+            "east": 3,
+            "west": 6
+          },
+          "total_waiting": 20,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 6,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -16.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 6,
+            "south": 7,
+            "east": 5,
+            "west": 8
+          },
+          "total_waiting": 26,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 7,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -25.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 7,
+            "south": 9,
+            "east": 6,
+            "west": 9
+          },
+          "total_waiting": 31,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 8,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -34.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 8,
+            "south": 10,
+            "east": 8,
+            "west": 10
+          },
+          "total_waiting": 36,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 9,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -43.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 10,
+            "south": 11,
+            "east": 10,
+            "west": 11
+          },
+          "total_waiting": 42,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 10,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -52.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 11,
+            "south": 13,
+            "east": 12,
+            "west": 12
+          },
+          "total_waiting": 48,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 11,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -61.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 12,
+            "south": 15,
+            "east": 13,
+            "west": 14
+          },
+          "total_waiting": 54,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 12,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -70.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 13,
+            "south": 16,
+            "east": 13,
+            "west": 16
+          },
+          "total_waiting": 58,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 13,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -79.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 14,
+            "south": 17,
+            "east": 14,
+            "west": 17
+          },
+          "total_waiting": 62,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 14,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -88.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 16,
+            "south": 18,
+            "east": 16,
+            "west": 18
+          },
+          "total_waiting": 68,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 15,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -97.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 16,
+            "south": 18,
+            "east": 16,
+            "west": 20
+          },
+          "total_waiting": 70,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 16,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -106.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 18,
+            "south": 20,
+            "east": 17,
+            "west": 20
+          },
+          "total_waiting": 75,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 17,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -115.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 20,
+            "south": 20,
+            "east": 17,
+            "west": 20
+          },
+          "total_waiting": 77,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 18,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -124.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 20,
+            "south": 20,
+            "east": 19,
+            "west": 20
+          },
+          "total_waiting": 79,
+          "vehicles_processed": 17
+        },
+        {
+          "step": 19,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -133.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 20,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 80,
+          "vehicles_processed": 17
+        }
+      ],
+      "total_reward": -133.0,
+      "final_metrics": {
+        "total_steps": 20,
+        "avg_reward_per_step": -6.65,
+        "final_queue_total": 80,
+        "vehicles_processed": 17
+      }
+    },
+    {
+      "episode_number": 2,
+      "steps": [
+        {
+          "step": 0,
+          "action": 0,
+          "reward": 2.0,
+          "cumulative_reward": 2.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 35,
+          "queue_lengths": {
+            "north": 2,
+            "south": 2,
+            "east": 3,
+            "west": 3
+          },
+          "total_waiting": 10,
+          "vehicles_processed": 4
+        },
+        {
+          "step": 1,
+          "action": 3,
+          "reward": 0.0,
+          "cumulative_reward": 2.0,
+          "light_state": "EAST_WEST_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 4,
+            "south": 3,
+            "east": 4,
+            "west": 3
+          },
+          "total_waiting": 14,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 2,
+          "action": 5,
+          "reward": -11.0,
+          "cumulative_reward": -9.0,
+          "light_state": "ALL_RED",
+          "light_timer": 0,
+          "queue_lengths": {
+            "north": 6,
+            "south": 4,
+            "east": 6,
+            "west": 5
+          },
+          "total_waiting": 21,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 3,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -18.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 8,
+            "south": 4,
+            "east": 8,
+            "west": 7
+          },
+          "total_waiting": 27,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 4,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -27.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 8,
+            "south": 5,
+            "east": 10,
+            "west": 9
+          },
+          "total_waiting": 32,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 5,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -36.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 9,
+            "south": 5,
+            "east": 11,
+            "west": 10
+          },
+          "total_waiting": 35,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 6,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -45.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 9,
+            "south": 5,
+            "east": 13,
+            "west": 12
+          },
+          "total_waiting": 39,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 7,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -54.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 11,
+            "south": 5,
+            "east": 13,
+            "west": 14
+          },
+          "total_waiting": 43,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 8,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -63.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 13,
+            "south": 6,
+            "east": 14,
+            "west": 15
+          },
+          "total_waiting": 48,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 9,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -72.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 14,
+            "south": 8,
+            "east": 16,
+            "west": 16
+          },
+          "total_waiting": 54,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 10,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -81.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 14,
+            "south": 10,
+            "east": 17,
+            "west": 17
+          },
+          "total_waiting": 58,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 11,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -90.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 15,
+            "south": 12,
+            "east": 18,
+            "west": 19
+          },
+          "total_waiting": 64,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 12,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -99.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 16,
+            "south": 14,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 70,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 13,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -108.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 17,
+            "south": 16,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 73,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 14,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -117.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 17,
+            "south": 17,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 74,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 15,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -126.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 18,
+            "south": 18,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 76,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 16,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -135.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 19,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 79,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 17,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -144.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 20,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 80,
+          "vehicles_processed": 6
+        }
+      ],
+      "total_reward": -144.0,
+      "final_metrics": {
+        "total_steps": 18,
+        "avg_reward_per_step": -8.0,
+        "final_queue_total": 80,
+        "vehicles_processed": 6
+      }
+    },
+    {
+      "episode_number": 3,
+      "steps": [
+        {
+          "step": 0,
+          "action": 0,
+          "reward": 2.0,
+          "cumulative_reward": 2.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 35,
+          "queue_lengths": {
+            "north": 1,
+            "south": 2,
+            "east": 4,
+            "west": 0
+          },
+          "total_waiting": 7,
+          "vehicles_processed": 2
+        },
+        {
+          "step": 1,
+          "action": 3,
+          "reward": 0.0,
+          "cumulative_reward": 2.0,
+          "light_state": "EAST_WEST_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 2,
+            "south": 4,
+            "east": 4,
+            "west": 2
+          },
+          "total_waiting": 12,
+          "vehicles_processed": 3
+        },
+        {
+          "step": 2,
+          "action": 2,
+          "reward": -8.0,
+          "cumulative_reward": -6.0,
+          "light_state": "NORTH_SOUTH_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 2,
+            "south": 3,
+            "east": 6,
+            "west": 4
+          },
+          "total_waiting": 15,
+          "vehicles_processed": 6
+        },
+        {
+          "step": 3,
+          "action": 3,
+          "reward": 0.0,
+          "cumulative_reward": -6.0,
+          "light_state": "EAST_WEST_GREEN",
+          "light_timer": 25,
+          "queue_lengths": {
+            "north": 2,
+            "south": 5,
+            "east": 6,
+            "west": 2
+          },
+          "total_waiting": 15,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 4,
+          "action": 5,
+          "reward": -11.0,
+          "cumulative_reward": -17.0,
+          "light_state": "ALL_RED",
+          "light_timer": 0,
+          "queue_lengths": {
+            "north": 2,
+            "south": 7,
+            "east": 8,
+            "west": 2
+          },
+          "total_waiting": 19,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 5,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -26.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 2,
+            "south": 7,
+            "east": 9,
+            "west": 4
+          },
+          "total_waiting": 22,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 6,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -35.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 2,
+            "south": 9,
+            "east": 10,
+            "west": 5
+          },
+          "total_waiting": 26,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 7,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -44.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 3,
+            "south": 10,
+            "east": 12,
+            "west": 5
+          },
+          "total_waiting": 30,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 8,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -53.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 5,
+            "south": 12,
+            "east": 13,
+            "west": 7
+          },
+          "total_waiting": 37,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 9,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -62.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 6,
+            "south": 13,
+            "east": 13,
+            "west": 9
+          },
+          "total_waiting": 41,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 10,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -71.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 6,
+            "south": 15,
+            "east": 15,
+            "west": 11
+          },
+          "total_waiting": 47,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 11,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -80.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 6,
+            "south": 17,
+            "east": 16,
+            "west": 11
+          },
+          "total_waiting": 50,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 12,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -89.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 8,
+            "south": 19,
+            "east": 17,
+            "west": 13
+          },
+          "total_waiting": 57,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 13,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -98.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 9,
+            "south": 20,
+            "east": 19,
+            "west": 15
+          },
+          "total_waiting": 63,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 14,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -107.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 10,
+            "south": 20,
+            "east": 20,
+            "west": 17
+          },
+          "total_waiting": 67,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 15,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -116.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 11,
+            "south": 20,
+            "east": 20,
+            "west": 19
+          },
+          "total_waiting": 70,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 16,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -125.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 13,
+            "south": 20,
+            "east": 20,
+            "west": 19
+          },
+          "total_waiting": 72,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 17,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -134.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 14,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 74,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 18,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -143.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 15,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 75,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 19,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -152.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 16,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 76,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 20,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -161.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 17,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 77,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 21,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -170.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 19,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 79,
+          "vehicles_processed": 11
+        },
+        {
+          "step": 22,
+          "action": 7,
+          "reward": -9.0,
+          "cumulative_reward": -179.0,
+          "light_state": "ALL_RED",
+          "light_timer": 10,
+          "queue_lengths": {
+            "north": 20,
+            "south": 20,
+            "east": 20,
+            "west": 20
+          },
+          "total_waiting": 80,
+          "vehicles_processed": 11
+        }
+      ],
+      "total_reward": -179.0,
+      "final_metrics": {
+        "total_steps": 23,
+        "avg_reward_per_step": -7.782608695652174,
+        "final_queue_total": 80,
+        "vehicles_processed": 11
+      }
+    }
+  ],
+  "overall_performance": {
+    "total_episodes": 3,
+    "episode_rewards": [
+      -133.0,
+      -144.0,
+      -179.0
+    ],
+    "average_reward": -152.0,
+    "best_episode": 1,
+    "worst_episode": 3,
+    "reward_std": 19.61292091114087,
+    "total_frames": 61,
+    "video_duration_seconds": 3.05,
+    "performance_rating": "GOOD"
+  },
+  "technical_details": {
+    "model_loaded": true,
+    "model_type": "PPO"
+  },
+  "environment_info": {
+    "environment_type": "Rwanda Traffic Junction",
+    "observation_space_size": 113,
+    "action_space_size": 9,
+    "action_descriptions": [
+      "Extend North-South Green",
+      "Extend East-West Green",
+      "Switch to North-South Green",
+      "Switch to East-West Green",
+      "Emergency Priority Override",
+      "All Red Transition",
+      "Reset Timer to Default",
+      "Short Green Cycle",
+      "Extended Green Cycle"
+    ],
+    "traffic_directions": [
+      "North",
+      "South",
+      "East",
+      "West"
+    ],
+    "max_queue_length": 20,
+    "light_timer_max": 60
+  }
+}
