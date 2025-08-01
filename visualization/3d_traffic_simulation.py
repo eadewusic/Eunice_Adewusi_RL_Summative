@@ -105,7 +105,7 @@ class EnhancedTrafficVideoCreator:
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         
         # Configure rendering
-        p.configureDebugVisualizer(p.COV_ENABLE_GUI, 1)
+        p.configureDebugVisualizer(p.COV_ENABLE_GUI, 1) # Use 0 to hide all GUI panels
         p.configureDebugVisualizer(p.COV_ENABLE_SHADOWS, 1)
         p.configureDebugVisualizer(p.COV_ENABLE_WIREFRAME, 0)
         p.setGravity(0, 0, -9.81)
