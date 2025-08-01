@@ -277,7 +277,7 @@ class EnhancedTrafficVideoCreator:
                     pass
     
     def _add_hud_display(self, episode, step, reward, action, total_reward):
-        """Add comprehensive HUD display"""
+        """Add comprehensive HUD display with left/right layout"""
         p.removeAllUserDebugItems()
         
         action_names = [
@@ -285,17 +285,20 @@ class EnhancedTrafficVideoCreator:
             "Emergency Priority", "All Red", "Reset Timer", "Short Cycle", "Extended Cycle"
         ]
         
-        # Main performance info
-        info_lines = [
-            f"RWANDA TRAFFIC 3D RL AGENT DEMO",
+        # LEFT SIDE - Main performance info
+        left_info_lines = [
+            f"TRAFFIC RL AGENT",
             f"Episode: {episode}/3",
             f"Step: {step}",
             f"Current Reward: {reward:.2f}",
             f"Episode Total: {total_reward:.2f}",
             f"Action: {action_names[action] if 0 <= action < len(action_names) else 'Unknown'}",
             f"Light State: {self.env.current_light.name}",
-            f"Timer Remaining: {self.env.light_timer}s",
-            "",
+            f"Timer Remaining: {self.env.light_timer}s"
+        ]
+        
+        # RIGHT SIDE - Traffic queues info
+        right_info_lines = [
             "TRAFFIC QUEUES:",
             f"North: {self.env.vehicle_queues[TrafficDirection.NORTH]} vehicles",
             f"South: {self.env.vehicle_queues[TrafficDirection.SOUTH]} vehicles", 
@@ -306,10 +309,17 @@ class EnhancedTrafficVideoCreator:
             f"Processed: {self.env.vehicles_processed} vehicles"
         ]
         
-        # Display text
-        for i, line in enumerate(info_lines):
+        # Display LEFT SIDE text
+        for i, line in enumerate(left_info_lines):
             p.addUserDebugText(
-                line, textPosition=[10, 12, 12 - i * 0.4],
+                line, textPosition=[-15, 15, 19.7 - i * 1.2],  # Left side (negative x)
+                textColorRGB=[1, 1, 1], textSize=1.0
+            )
+
+        # Display RIGHT SIDE text
+        for i, line in enumerate(right_info_lines):
+            p.addUserDebugText(
+                line, textPosition=[8, 18, 17 - i * 0.8],   # Right side (positive x)
                 textColorRGB=[1, 1, 1], textSize=1.0
             )
     
