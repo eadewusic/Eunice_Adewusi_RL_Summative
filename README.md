@@ -11,7 +11,6 @@ This project develops and evaluates reinforcement learning agents for intelligen
 ![Training Progress](https://img.shields.io/badge/Training_Episodes-75,000+-green)
 ![Success Rate](https://img.shields.io/badge/Success_Rate-64.3%25-blue)
 ![Best Performance](https://img.shields.io/badge/Best_Improvement-+74.7%25-gold)
-![Code Quality](https://img.shields.io/badge/Code_Quality-Production_Ready-success)
 
 ### Real-World Impact
 - **Location**: Kigali, Rwanda traffic junctions
@@ -191,6 +190,8 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 - **Performance**: VERY_GOOD (-128.33 average reward)
 - **Model**: PPO_AGGRESSIVE (best performer)
 - **Episodes**: 3 complete scenarios
+
+
 
 ### **3D Traffic Demo**  
 - **File**: `traffic_3d_demo_20250801_200808.mp4`
