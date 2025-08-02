@@ -191,8 +191,6 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 - **Model**: PPO_AGGRESSIVE (best performer)
 - **Episodes**: 3 complete scenarios
 
-
-
 ### **3D Traffic Demo**  
 - **File**: `traffic_3d_demo_20250801_200808.mp4`
 - **Duration**: 3.05 seconds (61 frames)
