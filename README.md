@@ -1,17 +1,17 @@
 # 🚦 Rwanda Traffic Junction - Reinforcement Learning Optimization System
 
+This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, we demonstrate that AI agents can significantly outperform traditional traffic management methods.
+
+![image](./visualization/images/3d-traffic-demo.png)
+
+**Mission: Replace road wardens with intelligent agents** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
+
 ![RL Algorithms](https://img.shields.io/badge/Algorithms-4-orange)
 ![Configurations](https://img.shields.io/badge/Configurations-17-red)
 ![Training Progress](https://img.shields.io/badge/Training_Episodes-75,000+-green)
 ![Success Rate](https://img.shields.io/badge/Success_Rate-64.3%25-blue)
 ![Best Performance](https://img.shields.io/badge/Best_Improvement-+74.7%25-gold)
 ![Code Quality](https://img.shields.io/badge/Code_Quality-Production_Ready-success)
-
-This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, we demonstrate that AI agents can significantly outperform traditional traffic management methods.
-
-![image](3d_traffic_simulation.py)
-
-**Mission: Replace road wardens with intelligent agents** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
 
 ### Real-World Impact
 - **Location**: Kigali, Rwanda traffic junctions
