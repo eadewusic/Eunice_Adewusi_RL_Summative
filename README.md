@@ -1,14 +1,17 @@
 # 🚦 Rwanda Traffic Junction - Reinforcement Learning Optimization System
 
-## Mission Statement
-**"Replace road wardens with intelligent agents"** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
-
 ![RL Algorithms](https://img.shields.io/badge/Algorithms-4-orange)
 ![Configurations](https://img.shields.io/badge/Configurations-17-red)
-
-## Project Overview
+![Training Progress](https://img.shields.io/badge/Training_Episodes-75,000+-green)
+![Success Rate](https://img.shields.io/badge/Success_Rate-64.3%25-blue)
+![Best Performance](https://img.shields.io/badge/Best_Improvement-+74.7%25-gold)
+![Code Quality](https://img.shields.io/badge/Code_Quality-Production_Ready-success)
 
 This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, we demonstrate that AI agents can significantly outperform traditional traffic management methods.
+
+![image](./visualization/3d_traffic_simulation.py)
+
+**Mission: Replace road wardens with intelligent agents** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
 
 ### Real-World Impact
 - **Location**: Kigali, Rwanda traffic junctions
@@ -180,6 +183,8 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ## Video Demonstrations
 
+![image](./videos/rwanda_traffic_2d_demo.mp4)
+
 ### **2D Traffic Demo**
 - **File**: `rwanda_traffic_2d_demo.mp4`
 - **Duration**: 6.25 seconds (125 frames)
@@ -244,7 +249,7 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ## Rwanda Context
 
-### 🌍 **Real-World Application**
+### **Real-World Application**
 - **Location**: Kigali traffic junctions
 - **Problem**: Manual road warden inefficiency
 - **Traffic Patterns**: Rush hours (7-9 AM, 5-7 PM)
@@ -281,18 +286,6 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 - **DQN**: Learning rate 1e-4, buffer size 100k, epsilon decay
 - **REINFORCE**: Learning rate 1e-3, baseline normalization
 - **Actor-Critic**: Learning rates 3e-4/1e-3 (actor/critic)
-
-## **Project Stats**
-
-![Training Progress](https://img.shields.io/badge/Training_Episodes-75,000+-green)
-![Success Rate](https://img.shields.io/badge/Success_Rate-64.3%25-blue)
-![Best Performance](https://img.shields.io/badge/Best_Improvement-+74.7%25-gold)
-![Code Quality](https://img.shields.io/badge/Code_Quality-Production_Ready-success)
-
-**Generated Files**: 50+ (models, logs, visualizations, reports, videos)  
-**Training Time**: 850+ hours cumulative  
-**Lines of Code**: 5,000+ (environment, training, evaluation)  
-**Documentation**: 100% coverage with examples and usage guides
 
 ---
 
