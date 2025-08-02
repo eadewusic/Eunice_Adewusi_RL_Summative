@@ -183,7 +183,7 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ## Video Demonstrations
 
-![video](./videos/rwanda_traffic_2d_demo.mp4)
+![image](/visualization/images/2d-traffic-demo.png)
 
 ### **2D Traffic Demo**
 - **File**: `rwanda_traffic_2d_demo.mp4`
