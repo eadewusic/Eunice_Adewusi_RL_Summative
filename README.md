@@ -9,7 +9,7 @@
 
 This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, we demonstrate that AI agents can significantly outperform traditional traffic management methods.
 
-![image](./visualization/3d_traffic_simulation.py)
+![image](3d_traffic_simulation.py)
 
 **Mission: Replace road wardens with intelligent agents** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
 
@@ -183,7 +183,7 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ## Video Demonstrations
 
-![image](./videos/rwanda_traffic_2d_demo.mp4)
+![video](./videos/rwanda_traffic_2d_demo.mp4)
 
 ### **2D Traffic Demo**
 - **File**: `rwanda_traffic_2d_demo.mp4`
