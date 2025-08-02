@@ -1,6 +1,6 @@
 # 🚦 Rwanda Traffic Junction - Reinforcement Learning Optimization System
 
-This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, we demonstrate that AI agents can significantly outperform traditional traffic management methods.
+This project develops and evaluates reinforcement learning agents for intelligent traffic light control at busy junctions in Rwanda. Through comprehensive experimentation with 4 different RL algorithms and 17 distinct configurations, it is demonstrated that AI agents can significantly outperform traditional traffic management methods.
 
 ![image](./visualization/images/3d-traffic-demo.png)
 
