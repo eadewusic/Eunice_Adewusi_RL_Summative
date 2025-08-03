@@ -106,8 +106,9 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ### **Performance vs. Random Baseline**
 - **Random Baseline**: -599.80 ± 223.80
-- **Best Achievement**: +74.7% improvement (PPO_AGGRESSIVE)
-- **Worst Performance**: -2396.0% degradation (Actor-Critic_AGGRESSIVE)
+- **Best Achievement**: -151.85 ± 22.42 (PPO Aggressive, +74.7% improvement)
+- **Worst Failure**: -14970.75 ± 8.10 (Actor-Critic Aggressive, -2396% degradation)
+- **Configurations Beating Random**: 9 out of 16 trained configurations (56.3%)
 
 ## Installation
 
@@ -254,7 +255,7 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 - **Comparative Studies**: Cross-algorithm performance analysis
 
 ### **Data Quality**
-- **75,000+ Episodes**: Comprehensive training coverage
+- **300,000+ Episodes**: Comprehensive training coverage
 - **Multi-scenario Testing**: Various traffic conditions
 - **Reproducible Results**: Seed-based consistency
 - **Validated Metrics**: Statistical significance testing
@@ -277,15 +278,19 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 - **Episode Length**: Variable (terminated by traffic conditions)
 
 ### **Action Space**
-0. **Extend North-South Green** - Extend current green phase
-1. **Extend East-West Green** - Extend perpendicular green phase  
-2. **Switch to North-South** - Change to NS green phase
-3. **Switch to East-West** - Change to EW green phase
-4. **Emergency Priority** - Activate emergency protocol
-5. **All Red** - Stop all traffic (transition phase)
-6. **Reset Timer** - Reset phase timing to default
-7. **Short Cycle** - Use abbreviated light cycle
-8. **Extended Cycle** - Use longer light cycle for heavy traffic
+**Type:** Discrete - gym.spaces.Discrete(9)
+**Traffic Light Control Actions:**
+- **Action 0: Extend North-South Green** - Add 10 seconds to the current NS green phase (max 90s total)
+- **Action 1: Extend East-West Green** - Add 10 seconds to the current EW green phase (max 90s total)
+- **Action 2: Switch to North-South Green** - Immediately change to NS green with 30s default timing
+- **Action 3: Switch to East-West Green** - Immediately change to EW green with 30s default timing
+**Emergency and Special Control Actions:**
+- **Action 4: Emergency Priority Override** - Activate emergency vehicle protocol with immediate direction switching
+- **Action 5: All Red Transition** - Set all lights to red for 5-second safe transition period
+- **Action 6: Reset Timer** - Reset current phase to 30-second standard timing
+**Adaptive Timing Actions:**
+- **Action 7: Short Green Cycle** - Set 15-second cycle for light traffic conditions
+- **Action 8: Extended Green Cycle** - Set 60-second cycle for heavy traffic conditions
 
 ### **Model Architectures**
 - **PPO**: Actor-Critic with shared features (256x256 hidden layers)
