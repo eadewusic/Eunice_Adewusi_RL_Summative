@@ -127,7 +127,7 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 | **15** | **Actor-Critic** | **BASELINE** | **-9238.35** | **±113.48** | **-1440%** | **CATASTROPHIC** |
 | **16** | **Actor-Critic** | **AGGRESSIVE** | **-14970.75** | **±8.10** | **-2396%** | **CATASTROPHIC** |
 
-## The Shocking Discovery: Random Actions Beat 6/16 Trained Models
+### The Shocking Discovery: Random Actions Beat 6/16 Trained Models
 
 One of the most significant findings of this project: **Random actions (-599.80) outperformed 6 out of 16 sophisticated RL configurations**, including:
 
@@ -356,4 +356,4 @@ This reveals both the genuine difficulty of traffic optimization and the critica
 
 ---
 
-*This project demonstrates the successful application of reinforcement learning to real-world traffic optimization, achieving significant performance improvements while providing comprehensive analysis and documentation for academic and practical use. Intelligent RL agents can achieve up to **74.7% improvement** over traditional traffic management, but successful deployment critically depends on proper algorithm and configuration selection.*
+*This project demonstrates that intelligent RL agents can achieve up to **74.7% improvement** over traditional traffic management, but successful deployment critically depends on proper algorithm and configuration selection.*
