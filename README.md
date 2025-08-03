@@ -6,10 +6,10 @@ This project develops and evaluates reinforcement learning agents for intelligen
 
 **Mission: Replace road wardens with intelligent agents** - A comprehensive reinforcement learning study to optimize traffic flow at busy junctions in Rwanda using state-of-the-art RL algorithms.
 
-![RL Algorithms](https://img.shields.io/badge/Algorithms-4-orange)
+![RL Algorithms](https://img.shields.io/badge/Algorithm_Families-4-orange)
 ![Configurations](https://img.shields.io/badge/Configurations-17-red)
-![Training Progress](https://img.shields.io/badge/Training_Episodes-75,000+-green)
-![Success Rate](https://img.shields.io/badge/Success_Rate-64.3%25-blue)
+![Training Progress](https://img.shields.io/badge/Training_Steps-300,000+-green)
+![Success Rate](https://img.shields.io/badge/Success_Rate-56.3%25-blue)
 ![Best Performance](https://img.shields.io/badge/Best_Improvement-+74.7%25-gold)
 
 ### Real-World Impact
@@ -27,11 +27,13 @@ This project develops and evaluates reinforcement learning agents for intelligen
 - **Training Efficiency**: Excellent (13-49 episodes)
 
 ### **Comprehensive Study Results**
-- **17 Configurations Tested** across 4 algorithm families
-- **Success Rate**: 64.3% (9/14 configurations beat random baseline)
+- **17 Total Configurations Tested** (16 trained + 1 random baseline)
+- **4 Algorithm Families**: PPO, REINFORCE, Actor-Critic, DQN
+- **Success Rate**: 56.3% (9/16 trained configurations beat random baseline)
 - **Elite Tier**: 4 configurations (all PPO variants)
-- **Training Time**: 850+ hours of cumulative training
-- **Episodes Logged**: 75,000+ total training episodes
+- **Performance Range**: -151.85 to -14970.75 (98.7x difference!)
+- **Training Methods**: Mixed (timesteps for some, episodes for others)
+- **Episodes Logged:** 300,000+ training steps across mixed methodologies
 
 ### **Algorithm Performance Ranking**
 1. **PPO Family**: 100% success rate (4/4 configs successful)
@@ -90,13 +92,17 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 ## Results Summary
 
 ### **Top Performing Configurations**
-| Rank | Configuration | Final Reward | Improvement | Tier |
-|------|---------------|--------------|-------------|------|
-| 1st | PPO_AGGRESSIVE | -151.85 | +74.7% | **ELITE** |
-| 2nd | PPO_HIGH_ENTROPY | -154.00 | +74.3% | **ELITE** |
-| 3rd | PPO_CONSERVATIVE | -153.60 | +74.4% | **ELITE** |
-| 4th | PPO_MAIN_TRAINING | -158.25 | +73.6% | **ELITE** |
-| 5th | ACTOR_CRITIC_BALANCED | -182.70 | +69.5% | **EXCELLENCE** |
+| Rank | Configuration | Final Reward | Std Dev | Improvement | Tier |
+|------|---------------|--------------|---------|-------------|------|
+| 1st | PPO_AGGRESSIVE | -151.85 | ±22.42 | +74.7% | **ELITE** |
+| 2nd | PPO_CONSERVATIVE | -153.60 | ±18.31 | +74.4% | **ELITE** |
+| 3rd | PPO_HIGH_ENTROPY | -154.00 | ±22.66 | +74.3% | **ELITE** |
+| 4th | PPO_MAIN_TRAINING | -158.25 | ±20.41 | +73.6% | **ELITE** |
+| 5th | ACTOR_CRITIC_BALANCED | -182.70 | ±17.83 | +69.5% | **EXCELLENCE** |
+| 6th | ACTOR_CRITIC_CONSERVATIVE | -188.30 | ±22.73 | +68.6% | **EXCELLENCE** |
+| 7th | REINFORCE_MAIN_TRAINING | -188.95 | ±25.29 | +68.5% | **EXCELLENCE** |
+| 8th | REINFORCE_CONSERVATIVE | -191.10 | ±23.97 | +68.1% | **EXCELLENCE** |
+| 9th | REINFORCE_MODERATE | -242.80 | ±27.87 | +59.5% | **GOOD** |
 
 ### **Performance vs. Random Baseline**
 - **Random Baseline**: -599.80 ± 223.80
@@ -143,17 +149,24 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ## Training & Evaluation
 
-### **Training Methodology**
-- **Episode-based Training**: Variable lengths (13-25,000 episodes)
-- **Hyperparameter Tuning**: Grid search across key parameters
-- **Early Stopping**: Prevents overfitting with convergence detection
-- **Multi-scenario Training**: Various traffic patterns and conditions
+### **Complete Experimental Scope**
+- **Total Configurations**: 17 (16 trained algorithms + 1 random baseline)
+- **Algorithm Families**: 4 (PPO, REINFORCE, Actor-Critic, DQN)
+- **Hyperparameter Variants**: Extensive grid search across key parameters
+- **Training Methodology**: Mixed approach (timesteps for PPO/DQN, episodes for REINFORCE/Actor-Critic)
+- **Performance Spread**: 98.7x difference between best and worst performers
 
 ### **Evaluation Metrics**
 - **Primary**: Episode reward (traffic flow efficiency)
 - **Secondary**: Vehicle processing rate, queue lengths, waiting times
 - **Stability**: Reward variance and convergence analysis  
 - **Efficiency**: Training time vs. performance trade-offs
+
+### **Training Specifications by Algorithm**
+- **PPO**: 200,000 timesteps (5-7 minutes training)
+- **REINFORCE**: 850-1000 episodes (51 seconds - 2.3 minutes)
+- **Actor-Critic**: 1000 episodes (1.5-23 minutes depending on config)
+- **DQN**: 100,000 timesteps (5-6 minutes)
 
 ### **Hyperparameter Configurations**
 
