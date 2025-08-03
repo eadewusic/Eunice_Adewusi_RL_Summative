@@ -279,15 +279,18 @@ pip freeze | ForEach-Object { $_.Split('==')[0] } > requirements.txt
 
 ### **Action Space**
 **Type:** Discrete - gym.spaces.Discrete(9)
+
 **Traffic Light Control Actions:**
 - **Action 0: Extend North-South Green** - Add 10 seconds to the current NS green phase (max 90s total)
 - **Action 1: Extend East-West Green** - Add 10 seconds to the current EW green phase (max 90s total)
 - **Action 2: Switch to North-South Green** - Immediately change to NS green with 30s default timing
 - **Action 3: Switch to East-West Green** - Immediately change to EW green with 30s default timing
+  
 **Emergency and Special Control Actions:**
 - **Action 4: Emergency Priority Override** - Activate emergency vehicle protocol with immediate direction switching
 - **Action 5: All Red Transition** - Set all lights to red for 5-second safe transition period
 - **Action 6: Reset Timer** - Reset current phase to 30-second standard timing
+  
 **Adaptive Timing Actions:**
 - **Action 7: Short Green Cycle** - Set 15-second cycle for light traffic conditions
 - **Action 8: Extended Green Cycle** - Set 60-second cycle for heavy traffic conditions
